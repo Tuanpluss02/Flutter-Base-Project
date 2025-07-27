@@ -9,6 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:base/app/bloc/user_cubit.dart' as _i529;
+import 'package:base/core/network/interceptors/auth_interceptor.dart' as _i1051;
+import 'package:base/core/network/interceptors/error_interceptor.dart' as _i158;
 import 'package:base/core/network/network_module.dart' as _i899;
 import 'package:base/data/datasources/local/local_data_source.dart' as _i907;
 import 'package:base/data/datasources/local/user_local_data_source.dart'
@@ -37,6 +39,8 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final networkModule = _$NetworkModule();
+    gh.factory<_i1051.AuthInterceptor>(() => _i1051.AuthInterceptor());
+    gh.factory<_i158.ErrorInterceptor>(() => _i158.ErrorInterceptor());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => networkModule.sharedPreferences,
       preResolve: true,
