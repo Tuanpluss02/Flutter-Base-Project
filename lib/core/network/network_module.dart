@@ -1,16 +1,12 @@
 import 'package:base/configs/flavor/flavor_config.dart';
-import 'package:base/core/network/interceptors/auth_interceptor.dart';
-import 'package:base/core/network/interceptors/error_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
 @module
 abstract class NetworkModule {
-  static final Logger _logger = Logger();
-
   @lazySingleton
   Dio get dio {
     final dio = Dio();
@@ -36,26 +32,19 @@ abstract class NetworkModule {
 
     // Add interceptors in order of execution
     dio.interceptors.addAll([
-      // Authentication interceptor (adds auth headers)
-      AuthInterceptor(),
-
-      // Error handling interceptor
-      ErrorInterceptor(),
-
       // Logging interceptor (should be last for complete request/response logging)
       if (FlavorConfig.debugMode)
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseBody: true,
-          responseHeader: false,
-          error: true,
-          compact: true,
-          maxWidth: 90,
-          logPrint: (object) {
-            // Custom log print for better formatting
-            _logger.d('🌐 API: $object');
-          },
+        TalkerDioLogger(
+          settings: const TalkerDioLoggerSettings(
+            // All http responses enabled for console logging
+            printResponseData: true,
+            // All http requests disabled for console logging
+            printRequestData: false,
+            // Reposnse logs including http - headers
+            printResponseHeaders: true,
+            // Request logs without http - headers
+            printRequestHeaders: false,
+          ),
         ),
     ]);
 

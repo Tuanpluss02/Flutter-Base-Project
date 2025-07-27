@@ -9,13 +9,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:base/app/bloc/user_cubit.dart' as _i529;
-import 'package:base/core/network/interceptors/auth_interceptor.dart' as _i1051;
-import 'package:base/core/network/interceptors/error_interceptor.dart' as _i158;
 import 'package:base/core/network/network_module.dart' as _i899;
 import 'package:base/data/datasources/local/local_data_source.dart' as _i907;
 import 'package:base/data/datasources/local/user_local_data_source.dart'
     as _i1028;
-import 'package:base/data/datasources/remote/base_api_service.dart' as _i41;
 import 'package:base/data/datasources/remote/product_api_service.dart' as _i328;
 import 'package:base/data/datasources/remote/user_api_service.dart' as _i8;
 import 'package:base/data/repositories/user_repository_impl.dart' as _i904;
@@ -39,8 +36,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final networkModule = _$NetworkModule();
-    gh.factory<_i1051.AuthInterceptor>(() => _i1051.AuthInterceptor());
-    gh.factory<_i158.ErrorInterceptor>(() => _i158.ErrorInterceptor());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => networkModule.sharedPreferences,
       preResolve: true,
@@ -53,7 +48,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i8.UserApiService>(() => _i8.UserApiService(gh<_i361.Dio>()));
     gh.factory<_i328.ProductApiService>(
         () => _i328.ProductApiService(gh<_i361.Dio>()));
-    gh.factory<_i41.BaseApiService>(() => _i41.BaseApiService(gh<_i361.Dio>()));
     gh.factory<_i1012.UserRepository>(() => _i904.UserRepositoryImpl(
           gh<_i8.UserApiService>(),
           gh<_i1028.UserLocalDataSource>(),
