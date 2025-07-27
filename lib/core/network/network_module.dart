@@ -1,15 +1,15 @@
-import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
+import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @module
 abstract class NetworkModule {
   @lazySingleton
   Dio get dio {
     final dio = Dio();
-    
+
     // Base options with flavor-based configuration
     final timeoutMs = FlavorConfig.apiTimeout;
     dio.options = BaseOptions(
@@ -43,5 +43,6 @@ abstract class NetworkModule {
 
   @preResolve
   @singleton
-  Future<SharedPreferences> get sharedPreferences => SharedPreferences.getInstance();
+  Future<SharedPreferences> get sharedPreferences =>
+      SharedPreferences.getInstance();
 }

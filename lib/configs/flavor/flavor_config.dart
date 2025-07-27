@@ -1,9 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-enum Flavor {
-  develop,
-  production,
-}
+enum Flavor { develop, production }
 
 class FlavorConfig {
   static Flavor? appFlavor;

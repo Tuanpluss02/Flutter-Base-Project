@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
-import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/core/di/injection.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Load environment variables based on flavor
   await FlavorConfig.loadEnv();
-  
+
   // Initialize dependency injection
   await configureDependencies();
-  
+
   runApp(const MyApp());
 }
 
