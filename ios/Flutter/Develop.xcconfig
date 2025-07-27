@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+// Develop flavor configuration
+PRODUCT_BUNDLE_IDENTIFIER = com.stormx.base.dev
+PRODUCT_NAME = Base Dev
+FLUTTER_TARGET = lib/main_develop.dart
