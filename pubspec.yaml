@@ -117,9 +117,9 @@ flutter:
     - assets/rives/
     - assets/lotties/
     - assets/svgs/
-    - assets/.env/.env
-    - assets/.env/.env.dev
-    - assets/.env/.env.production
+    - assets/env/.env
+    - assets/env/.env.dev
+    - assets/env/.env.production
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

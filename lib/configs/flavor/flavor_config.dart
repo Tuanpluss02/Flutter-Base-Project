@@ -23,13 +23,13 @@ class FlavorConfig {
     String envFile;
     switch (appFlavor) {
       case Flavor.develop:
-        envFile = 'assets/.env/.env.dev';
+        envFile = 'assets/env/.env.dev';
         break;
       case Flavor.production:
-        envFile = 'assets/.env/.env.production';
+        envFile = 'assets/env/.env.production';
         break;
       default:
-        envFile = 'assets/.env/.env';
+        envFile = 'assets/env/.env';
     }
     await dotenv.load(fileName: envFile);
   }

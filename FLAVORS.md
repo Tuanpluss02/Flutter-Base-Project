@@ -6,9 +6,9 @@ This project is configured with Flutter flavors for different environments: **de
 
 The project uses environment-specific configuration files:
 
-- `assets/.env/.env.dev` - Development environment configuration
-- `assets/.env/.env.production` - Production environment configuration
-- `assets/.env/.env` - Default fallback configuration
+- `assets/env/.env.dev` - Development environment configuration
+- `assets/env/.env.production` - Production environment configuration
+- `assets/env/.env` - Default fallback configuration
 
 ### Environment Variables
 
