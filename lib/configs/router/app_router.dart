@@ -1,7 +1,10 @@
+import 'package:base/app/bloc/todo_cubit.dart';
 import 'package:base/app/pages/home/home_page.dart';
-import 'package:base/app/pages/users/users_page.dart';
 import 'package:base/app/pages/todos/todos_page.dart';
+import 'package:base/app/pages/users/users_page.dart';
 import 'package:base/app/widgets/global_error_screen.dart';
+import 'package:base/core/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoutes {
@@ -27,7 +30,10 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.todos,
         name: 'todos',
-        builder: (context, state) => const TodosPage(),
+        builder: (context, state) => BlocProvider<TodoCubit>(
+          create: (context) => getIt<TodoCubit>()..fetchTodos(),
+          child: const TodosPage(),
+        ),
       ),
     ],
     errorBuilder: (context, state) => GlobalErrorScreen(),

@@ -64,10 +64,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i712.GetTodosUseCase>(
         () => _i712.GetTodosUseCase(gh<_i1004.TodoRepository>()));
-    gh.factory<_i927.GetTodoByIdUseCase>(
-        () => _i927.GetTodoByIdUseCase(gh<_i1004.TodoRepository>()));
     gh.factory<_i573.UpdateTodoUseCase>(
         () => _i573.UpdateTodoUseCase(gh<_i1004.TodoRepository>()));
+    gh.factory<_i927.GetTodoByIdUseCase>(
+        () => _i927.GetTodoByIdUseCase(gh<_i1004.TodoRepository>()));
     gh.factory<_i832.GetUsersUseCase>(
         () => _i832.GetUsersUseCase(gh<_i1012.UserRepository>()));
     gh.factory<_i970.GetUserByIdUseCase>(

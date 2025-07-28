@@ -1,71 +1,62 @@
+import 'package:base/app/bloc/todo_cubit.dart';
+import 'package:base/domain/entities/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:base/app/bloc/todo_cubit.dart';
-import 'package:base/core/di/injection.dart';
-import 'package:base/domain/entities/todo.dart';
 
 class TodosPage extends StatelessWidget {
   const TodosPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<TodoCubit>()..fetchTodos(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Todos'),
-          centerTitle: true,
-          actions: [
-            BlocBuilder<TodoCubit, TodoState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    context.read<TodoCubit>().fetchTodos();
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-        body: BlocBuilder<TodoCubit, TodoState>(
-          builder: (context, state) {
-            if (state is TodoInitial || state is TodoLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Todos'),
+        centerTitle: true,
+        actions: [
+          BlocBuilder<TodoCubit, TodoState>(
+            builder: (context, state) {
+              return IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () {
+                  context.read<TodoCubit>().fetchTodos();
+                },
               );
-            } else if (state is TodoLoaded) {
-              return _buildTodosList(context, state.todos);
-            } else if (state is TodoUpdating) {
-              return _buildTodosList(context, state.todos, state.updatingTodoId);
-            } else if (state is TodoError) {
-              return _buildErrorWidget(context, state.message);
-            }
-            return const SizedBox.shrink();
-          },
-        ),
+            },
+          ),
+        ],
+      ),
+      body: BlocBuilder<TodoCubit, TodoState>(
+        builder: (context, state) {
+          if (state is TodoInitial || state is TodoLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is TodoLoaded) {
+            return _buildTodosList(context, state.todos);
+          } else if (state is TodoUpdating) {
+            return _buildTodosList(context, state.todos, state.updatingTodoId);
+          } else if (state is TodoError) {
+            return _buildErrorWidget(context, state.message);
+          }
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
 
-  Widget _buildTodosList(BuildContext context, List<Todo> todos, [int? updatingTodoId]) {
+  Widget _buildTodosList(
+    BuildContext context,
+    List<Todo> todos, [
+    int? updatingTodoId,
+  ]) {
     if (todos.isEmpty) {
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.checklist,
-              size: 64,
-              color: Colors.grey,
-            ),
+            Icon(Icons.checklist, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
               'No todos found',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
           ],
         ),
@@ -82,7 +73,7 @@ class TodosPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final todo = todos[index];
           final isUpdating = updatingTodoId == todo.id;
-          
+
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             elevation: 2,
@@ -106,12 +97,10 @@ class TodosPage extends StatelessWidget {
               title: Text(
                 todo.title,
                 style: TextStyle(
-                  decoration: todo.completed 
-                      ? TextDecoration.lineThrough 
+                  decoration: todo.completed
+                      ? TextDecoration.lineThrough
                       : TextDecoration.none,
-                  color: todo.completed 
-                      ? Colors.grey 
-                      : null,
+                  color: todo.completed ? Colors.grey : null,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -125,14 +114,12 @@ class TodosPage extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: todo.completed 
+                        color: todo.completed
                             ? Colors.green.withValues(alpha: 0.1)
                             : Colors.orange.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: todo.completed 
-                              ? Colors.green
-                              : Colors.orange,
+                          color: todo.completed ? Colors.green : Colors.orange,
                           width: 1,
                         ),
                       ),
@@ -141,34 +128,28 @@ class TodosPage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: todo.completed 
-                              ? Colors.green
-                              : Colors.orange,
+                          color: todo.completed ? Colors.green : Colors.orange,
                         ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'ID: ${todo.id}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     const Spacer(),
                     Text(
                       'User: ${todo.userId}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-              onTap: isUpdating ? null : () {
-                _showTodoDetails(context, todo);
-              },
+              onTap: isUpdating
+                  ? null
+                  : () {
+                      _showTodoDetails(context, todo);
+                    },
             ),
           );
         },
@@ -183,17 +164,13 @@ class TodosPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red,
-            ),
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
             Text(
               'Error',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.red,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(color: Colors.red),
             ),
             const SizedBox(height: 8),
             Text(
@@ -216,77 +193,79 @@ class TodosPage extends StatelessWidget {
   }
 
   void _showTodoDetails(BuildContext context, Todo todo) {
+    // Capture the cubit instance before showing the dialog
+    final todoCubit = context.read<TodoCubit>();
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Todo #${todo.id}'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Title:',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+      builder: (dialogContext) => BlocProvider.value(
+        value: todoCubit,
+        child: AlertDialog(
+          title: Text('Todo #${todo.id}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title:',
+                style: Theme.of(
+                  dialogContext,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(todo.title),
-            const SizedBox(height: 16),
-            Text(
-              'Status:',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 4),
+              Text(todo.title),
+              const SizedBox(height: 16),
+              Text(
+                'Status:',
+                style: Theme.of(
+                  dialogContext,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 4),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
-              decoration: BoxDecoration(
-                color: todo.completed 
-                    ? Colors.green.withValues(alpha: 0.1)
-                    : Colors.orange.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: todo.completed 
-                      ? Colors.green
-                      : Colors.orange,
-                  width: 1,
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: todo.completed
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.orange.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: todo.completed ? Colors.green : Colors.orange,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  todo.completed ? 'Completed' : 'Pending',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: todo.completed ? Colors.green : Colors.orange,
+                  ),
                 ),
               ),
-              child: Text(
-                todo.completed ? 'Completed' : 'Pending',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: todo.completed 
-                      ? Colors.green
-                      : Colors.orange,
-                ),
+              const SizedBox(height: 16),
+              Text(
+                'User ID: ${todo.userId}',
+                style: const TextStyle(color: Colors.grey),
               ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Close'),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'User ID: ${todo.userId}',
-              style: const TextStyle(color: Colors.grey),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                todoCubit.toggleTodoCompletion(todo);
+              },
+              child: Text(todo.completed ? 'Mark Incomplete' : 'Mark Complete'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              context.read<TodoCubit>().toggleTodoCompletion(todo);
-            },
-            child: Text(todo.completed ? 'Mark Incomplete' : 'Mark Complete'),
-          ),
-        ],
       ),
     );
   }
