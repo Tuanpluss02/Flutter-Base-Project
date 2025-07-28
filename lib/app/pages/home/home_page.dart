@@ -20,7 +20,11 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.architecture, size: 100, color: Colors.blue),
+              const Icon(
+                Icons.architecture,
+                size: 100,
+                color: Color(0xFF6200EE),
+              ),
               const SizedBox(height: 32),
               const Text(
                 'Welcome to Flutter Clean Architecture Base Project',

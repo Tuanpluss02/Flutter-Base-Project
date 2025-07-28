@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:base/app/pages/home/home_page.dart';
 import 'package:base/app/pages/users/users_page.dart';
+import 'package:base/app/widgets/global_error_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -23,32 +23,6 @@ class AppRouter {
         builder: (context, state) => const UsersPage(),
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Page Not Found'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.red,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Page not found: ${state.uri.toString()}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => context.go(AppRoutes.home),
-              child: const Text('Go Home'),
-            ),
-          ],
-        ),
-      ),
-    ),
+    errorBuilder: (context, state) => GlobalErrorScreen(),
   );
 }
