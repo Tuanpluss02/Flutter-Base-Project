@@ -48,6 +48,15 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => context.go(AppRoutes.todos),
+                icon: const Icon(Icons.checklist),
+                label: const Text('View Todos'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+              const SizedBox(height: 16),
               OutlinedButton.icon(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(

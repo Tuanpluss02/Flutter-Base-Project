@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:base/domain/entities/todo.dart';
 
 part '../../generated/data/models/todo_model.g.dart';
 
@@ -20,4 +21,22 @@ class TodoModel {
       _$TodoModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TodoModelToJson(this);
+
+  Todo toEntity() {
+    return Todo(
+      userId: userId,
+      id: id,
+      title: title,
+      completed: completed,
+    );
+  }
+
+  factory TodoModel.fromEntity(Todo todo) {
+    return TodoModel(
+      userId: todo.userId,
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed,
+    );
+  }
 }
