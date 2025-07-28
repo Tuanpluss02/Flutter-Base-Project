@@ -1,52 +1,40 @@
 import 'package:base/configs/flavor/flavor_config.dart';
+import 'package:base/core/network/alice_service.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
-import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
 @module
 abstract class NetworkModule {
   @lazySingleton
-  Dio get dio {
-    final dio = Dio();
-
-    // Base options with flavor-based configuration
-    final timeoutMs = FlavorConfig.apiTimeout;
-    dio.options = BaseOptions(
-      baseUrl: FlavorConfig.apiBaseUrl,
-      connectTimeout: Duration(milliseconds: timeoutMs),
-      receiveTimeout: Duration(milliseconds: timeoutMs),
-      sendTimeout: Duration(milliseconds: timeoutMs),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Accept-Language': 'en-US,en;q=0.9',
-      },
-      validateStatus: (status) {
-        // Accept status codes from 200 to 299 and 304 (not modified)
-        return (status != null && status >= 200 && status < 300) ||
-            status == 304;
-      },
+  Dio dio(AliceService aliceService) {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: FlavorConfig.apiBaseUrl,
+        connectTimeout: Duration(milliseconds: FlavorConfig.apiTimeout),
+        receiveTimeout: Duration(milliseconds: FlavorConfig.apiTimeout),
+        sendTimeout: Duration(milliseconds: FlavorConfig.apiTimeout),
+      ),
     );
 
-    // Add interceptors in order of execution
-    dio.interceptors.addAll([
-      // Logging interceptor (should be last for complete request/response logging)
-      if (FlavorConfig.debugMode)
-        TalkerDioLogger(
-          settings: const TalkerDioLoggerSettings(
-            // All http responses enabled for console logging
-            printResponseData: true,
-            // All http requests disabled for console logging
-            printRequestData: false,
-            // Reposnse logs including http - headers
-            printResponseHeaders: true,
-            // Request logs without http - headers
-            printRequestHeaders: false,
-          ),
+    if (FlavorConfig.debugMode) {
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: false,
+          error: true,
+          maxWidth: 120,
         ),
-    ]);
+      );
+    }
+
+    // Add Alice interceptor for development flavor
+    if (FlavorConfig.isDevelopment && aliceService.isEnabled) {
+      dio.interceptors.add(aliceService.aliceDioAdapter);
+    }
 
     return dio;
   }

@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:base/app/bloc/user_cubit.dart' as _i529;
+import 'package:base/core/network/alice_service.dart' as _i74;
 import 'package:base/core/network/network_module.dart' as _i899;
 import 'package:base/data/datasources/local/local_data_source.dart' as _i907;
 import 'package:base/data/datasources/local/user_local_data_source.dart'
@@ -40,11 +41,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => networkModule.sharedPreferences,
       preResolve: true,
     );
-    gh.lazySingleton<_i361.Dio>(() => networkModule.dio);
+    gh.lazySingleton<_i74.AliceService>(() => _i74.AliceService());
     gh.factory<_i1028.UserLocalDataSource>(
         () => _i1028.UserLocalDataSource(gh<_i460.SharedPreferences>()));
     gh.factory<_i907.LocalDataSource>(
         () => _i907.LocalDataSource(gh<_i460.SharedPreferences>()));
+    gh.lazySingleton<_i361.Dio>(
+        () => networkModule.dio(gh<_i74.AliceService>()));
     gh.factory<_i8.UserApiService>(() => _i8.UserApiService(gh<_i361.Dio>()));
     gh.factory<_i328.ProductApiService>(
         () => _i328.ProductApiService(gh<_i361.Dio>()));

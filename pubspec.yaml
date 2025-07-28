@@ -45,10 +45,11 @@ dependencies:
 
   # Networking
   dio: ^5.7.0
-  talker_dio_logger: ^4.9.3
+  pretty_dio_logger: ^1.4.0
 
   # REST API Client
   retrofit: ^4.4.1
+  alice: ^1.0.0-dev.12
 
   # Model & Data Class
   freezed_annotation: ^2.4.4
@@ -78,6 +79,7 @@ dependencies:
 
   # Utilities
   equatable: ^2.0.5
+  alice_dio: ^1.0.6
 
 dev_dependencies:
   flutter_test:
