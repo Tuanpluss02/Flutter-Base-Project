@@ -12,10 +12,10 @@ import 'package:base/domain/repositories/user_repository.dart';
 
 @Injectable(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
-  final UserApiService _userApiService;
-  final UserLocalDataSource _userLocalDataSource;
 
   UserRepositoryImpl(this._userApiService, this._userLocalDataSource);
+  final UserApiService _userApiService;
+  final UserLocalDataSource _userLocalDataSource;
 
   @override
   Future<Either<Failure, List<User>>> getUsers() async {

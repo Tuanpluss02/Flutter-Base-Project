@@ -16,7 +16,7 @@ class AppTheme {
         surface: AppColors.background,
         onSurface: AppColors.onBackground,
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: AppTextStyles.displayLarge,
         displayMedium: AppTextStyles.displayMedium,
         displaySmall: AppTextStyles.displaySmall,

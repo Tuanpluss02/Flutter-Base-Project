@@ -36,6 +36,6 @@ class AppRouter {
         ),
       ),
     ],
-    errorBuilder: (context, state) => GlobalErrorScreen(),
+    errorBuilder: (context, state) => const GlobalErrorScreen(),
   );
 }

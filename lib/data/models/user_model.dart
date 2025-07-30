@@ -1,11 +1,6 @@
 import 'package:base/domain/entities/user.dart';
 
 class UserModel {
-  final int id;
-  final String name;
-  final String email;
-  final String? phone;
-  final String? website;
 
   const UserModel({
     required this.id,
@@ -25,6 +20,21 @@ class UserModel {
     );
   }
 
+  factory UserModel.fromEntity(User user) {
+    return UserModel(
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      website: user.website,
+    );
+  }
+  final int id;
+  final String name;
+  final String email;
+  final String? phone;
+  final String? website;
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -42,16 +52,6 @@ class UserModel {
       email: email,
       phone: phone,
       website: website,
-    );
-  }
-
-  factory UserModel.fromEntity(User user) {
-    return UserModel(
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      website: user.website,
     );
   }
 }

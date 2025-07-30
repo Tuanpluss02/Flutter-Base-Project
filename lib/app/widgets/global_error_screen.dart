@@ -15,7 +15,7 @@ class GlobalErrorScreen extends StatelessWidget {
           children: [
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
-            Text('Page not found', style: const TextStyle(fontSize: 18)),
+            const Text('Page not found', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => context.go(AppRoutes.home),

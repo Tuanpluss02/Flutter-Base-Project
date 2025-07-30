@@ -5,9 +5,9 @@ import 'package:base/data/models/user_model.dart';
 
 @injectable
 class UserLocalDataSource {
-  final SharedPreferences _prefs;
 
   UserLocalDataSource(this._prefs);
+  final SharedPreferences _prefs;
 
   static const String _usersKey = 'cached_users';
   static const String _userPrefix = 'cached_user_';

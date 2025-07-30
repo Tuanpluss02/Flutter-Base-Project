@@ -7,9 +7,9 @@ import 'package:base/domain/repositories/user_repository.dart';
 
 @injectable
 class GetUsersUseCase extends UseCaseWithoutParams<List<User>> {
-  final UserRepository _repository;
 
   GetUsersUseCase(this._repository);
+  final UserRepository _repository;
 
   @override
   Future<Either<Failure, List<User>>> call() async {

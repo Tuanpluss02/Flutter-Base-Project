@@ -1,9 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:base/core/error/failure.dart';
 import 'package:base/domain/entities/todo.dart';
 import 'package:base/domain/usecases/get_todos_usecase.dart';
 import 'package:base/domain/usecases/update_todo_usecase.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 // States
 abstract class TodoState {}
@@ -13,31 +13,28 @@ class TodoInitial extends TodoState {}
 class TodoLoading extends TodoState {}
 
 class TodoLoaded extends TodoState {
-  final List<Todo> todos;
   TodoLoaded(this.todos);
+  final List<Todo> todos;
 }
 
 class TodoError extends TodoState {
-  final String message;
   TodoError(this.message);
+  final String message;
 }
 
 class TodoUpdating extends TodoState {
+  TodoUpdating(this.todos, this.updatingTodoId);
   final List<Todo> todos;
   final int updatingTodoId;
-  TodoUpdating(this.todos, this.updatingTodoId);
 }
 
 // Cubit
 @injectable
 class TodoCubit extends Cubit<TodoState> {
+  TodoCubit(this._getTodosUseCase, this._updateTodoUseCase)
+    : super(TodoInitial());
   final GetTodosUseCase _getTodosUseCase;
   final UpdateTodoUseCase _updateTodoUseCase;
-
-  TodoCubit(
-    this._getTodosUseCase,
-    this._updateTodoUseCase,
-  ) : super(TodoInitial());
 
   Future<void> fetchTodos() async {
     emit(TodoLoading());

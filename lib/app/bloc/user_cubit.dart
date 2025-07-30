@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:base/core/error/failure.dart';
 import 'package:base/domain/entities/user.dart';
 import 'package:base/domain/usecases/get_users_usecase.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 // States
 abstract class UserState {}
@@ -12,21 +12,20 @@ class UserInitial extends UserState {}
 class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
-  final List<User> users;
   UserLoaded(this.users);
+  final List<User> users;
 }
 
 class UserError extends UserState {
-  final String message;
   UserError(this.message);
+  final String message;
 }
 
 // Cubit
 @injectable
 class UserCubit extends Cubit<UserState> {
-  final GetUsersUseCase _getUsersUseCase;
-
   UserCubit(this._getUsersUseCase) : super(UserInitial());
+  final GetUsersUseCase _getUsersUseCase;
 
   Future<void> fetchUsers() async {
     emit(UserLoading());

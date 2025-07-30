@@ -1,8 +1,4 @@
 class Todo {
-  final int userId;
-  final int id;
-  final String title;
-  final bool completed;
 
   const Todo({
     required this.userId,
@@ -10,6 +6,10 @@ class Todo {
     required this.title,
     required this.completed,
   });
+  final int userId;
+  final int id;
+  final String title;
+  final bool completed;
 
   Todo copyWith({
     int? userId,
