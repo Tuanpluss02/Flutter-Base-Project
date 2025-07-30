@@ -8,7 +8,6 @@ A comprehensive script to change app names and bundle IDs for different flavors 
 - ✅ **Flavor-aware**: Handles both `develop` and `production` flavors
 - ✅ **Interactive mode**: User-friendly prompts for easy configuration
 - ✅ **Command-line mode**: Scriptable for CI/CD pipelines
-- ✅ **Backup system**: Automatically backs up files before modification
 - ✅ **Validation**: Validates bundle ID format
 - ✅ **Environment files**: Updates `.env` files with new app names
 
@@ -88,12 +87,6 @@ Bundle IDs must follow the reverse domain name format:
 - ✅ `com.company.appname.dev`
 - ❌ `invalid-bundle-id`
 - ❌ `123.invalid`
-
-## Backup System
-
-The script automatically creates timestamped backups of all modified files:
-- Format: `filename.backup.YYYYMMDD_HHMMSS`
-- Example: `build.gradle.kts.backup.20241220_143022`
 
 ## Examples
 

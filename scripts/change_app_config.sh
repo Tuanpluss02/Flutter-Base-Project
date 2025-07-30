@@ -109,14 +109,7 @@ validate_bundle_id() {
     return 0
 }
 
-# Function to backup files
-backup_file() {
-    local file="$1"
-    if [[ -f "$file" ]]; then
-        cp "$file" "$file.backup.$(date +%Y%m%d_%H%M%S)"
-        print_info "Backed up $file"
-    fi
-}
+
 
 # Function to update Android configuration
 update_android_config() {
@@ -130,8 +123,6 @@ update_android_config() {
         print_error "Android build.gradle.kts not found at $ANDROID_BUILD_GRADLE"
         return 1
     fi
-    
-    backup_file "$ANDROID_BUILD_GRADLE"
     
     # Create temporary file for sed operations
     local temp_file=$(mktemp)
@@ -175,8 +166,6 @@ update_ios_config() {
         return 1
     fi
     
-    backup_file "$xcconfig_file"
-    
     # Update PRODUCT_BUNDLE_IDENTIFIER and PRODUCT_NAME
     sed -i '' \
         -e "s/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = $bundle_id/" \
@@ -197,8 +186,6 @@ update_macos_config() {
         print_warning "macOS AppInfo.xcconfig not found at $MACOS_APPINFO_XCCONFIG, skipping..."
         return 0
     fi
-    
-    backup_file "$MACOS_APPINFO_XCCONFIG"
     
     # Update PRODUCT_NAME and PRODUCT_BUNDLE_IDENTIFIER
     sed -i '' \
@@ -224,7 +211,6 @@ update_env_files() {
     fi
     
     if [[ -f "$env_file" ]]; then
-        backup_file "$env_file"
         sed -i '' "s/APP_NAME=.*/APP_NAME=$display_name/" "$env_file"
         print_success "Updated $env_file"
     else
@@ -233,7 +219,6 @@ update_env_files() {
     
     # Also update default env file if this is production
     if [[ "$flavor" == "production" && -f "$ENV_DEFAULT" ]]; then
-        backup_file "$ENV_DEFAULT"
         sed -i '' "s/APP_NAME=.*/APP_NAME=$display_name/" "$ENV_DEFAULT"
         print_success "Updated default environment file"
     fi
