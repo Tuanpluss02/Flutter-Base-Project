@@ -32,16 +32,12 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 extension GetItInjectableX on _i174.GetIt {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
-    final gh = _i526.GetItHelper(
-      this,
-      environment,
-      environmentFilter,
-    );
+    final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final networkModule = _$NetworkModule();
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => networkModule.sharedPreferences,
@@ -49,35 +45,49 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i74.AliceService>(() => _i74.AliceService());
     gh.factory<_i1028.UserLocalDataSource>(
-        () => _i1028.UserLocalDataSource(gh<_i460.SharedPreferences>()));
+      () => _i1028.UserLocalDataSource(gh<_i460.SharedPreferences>()),
+    );
     gh.factory<_i907.LocalDataSource>(
-        () => _i907.LocalDataSource(gh<_i460.SharedPreferences>()));
+      () => _i907.LocalDataSource(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i361.Dio>(
-        () => networkModule.dio(gh<_i74.AliceService>()));
+      () => networkModule.dio(gh<_i74.AliceService>()),
+    );
     gh.factory<_i8.UserApiService>(() => _i8.UserApiService(gh<_i361.Dio>()));
     gh.factory<_i10.TodoApiService>(() => _i10.TodoApiService(gh<_i361.Dio>()));
     gh.factory<_i1004.TodoRepository>(
-        () => _i425.TodoRepositoryImpl(gh<_i10.TodoApiService>()));
-    gh.factory<_i1012.UserRepository>(() => _i904.UserRepositoryImpl(
-          gh<_i8.UserApiService>(),
-          gh<_i1028.UserLocalDataSource>(),
-        ));
+      () => _i425.TodoRepositoryImpl(gh<_i10.TodoApiService>()),
+    );
+    gh.factory<_i1012.UserRepository>(
+      () => _i904.UserRepositoryImpl(
+        gh<_i8.UserApiService>(),
+        gh<_i1028.UserLocalDataSource>(),
+      ),
+    );
     gh.factory<_i712.GetTodosUseCase>(
-        () => _i712.GetTodosUseCase(gh<_i1004.TodoRepository>()));
+      () => _i712.GetTodosUseCase(gh<_i1004.TodoRepository>()),
+    );
     gh.factory<_i573.UpdateTodoUseCase>(
-        () => _i573.UpdateTodoUseCase(gh<_i1004.TodoRepository>()));
+      () => _i573.UpdateTodoUseCase(gh<_i1004.TodoRepository>()),
+    );
     gh.factory<_i927.GetTodoByIdUseCase>(
-        () => _i927.GetTodoByIdUseCase(gh<_i1004.TodoRepository>()));
+      () => _i927.GetTodoByIdUseCase(gh<_i1004.TodoRepository>()),
+    );
     gh.factory<_i832.GetUsersUseCase>(
-        () => _i832.GetUsersUseCase(gh<_i1012.UserRepository>()));
+      () => _i832.GetUsersUseCase(gh<_i1012.UserRepository>()),
+    );
     gh.factory<_i970.GetUserByIdUseCase>(
-        () => _i970.GetUserByIdUseCase(gh<_i1012.UserRepository>()));
+      () => _i970.GetUserByIdUseCase(gh<_i1012.UserRepository>()),
+    );
     gh.factory<_i529.UserCubit>(
-        () => _i529.UserCubit(gh<_i832.GetUsersUseCase>()));
-    gh.factory<_i161.TodoCubit>(() => _i161.TodoCubit(
-          gh<_i712.GetTodosUseCase>(),
-          gh<_i573.UpdateTodoUseCase>(),
-        ));
+      () => _i529.UserCubit(gh<_i832.GetUsersUseCase>()),
+    );
+    gh.factory<_i161.TodoCubit>(
+      () => _i161.TodoCubit(
+        gh<_i712.GetTodosUseCase>(),
+        gh<_i573.UpdateTodoUseCase>(),
+      ),
+    );
     return this;
   }
 }

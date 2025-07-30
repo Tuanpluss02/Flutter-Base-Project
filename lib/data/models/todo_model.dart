@@ -5,11 +5,6 @@ part '../../generated/data/models/todo_model.g.dart';
 
 @JsonSerializable()
 class TodoModel {
-  final int userId;
-  final int id;
-  final String title;
-  final bool completed;
-
   TodoModel({
     required this.userId,
     required this.id,
@@ -20,17 +15,6 @@ class TodoModel {
   factory TodoModel.fromJson(Map<String, dynamic> json) =>
       _$TodoModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TodoModelToJson(this);
-
-  Todo toEntity() {
-    return Todo(
-      userId: userId,
-      id: id,
-      title: title,
-      completed: completed,
-    );
-  }
-
   factory TodoModel.fromEntity(Todo todo) {
     return TodoModel(
       userId: todo.userId,
@@ -38,5 +22,15 @@ class TodoModel {
       title: todo.title,
       completed: todo.completed,
     );
+  }
+  final int userId;
+  final int id;
+  final String title;
+  final bool completed;
+
+  Map<String, dynamic> toJson() => _$TodoModelToJson(this);
+
+  Todo toEntity() {
+    return Todo(userId: userId, id: id, title: title, completed: completed);
   }
 }

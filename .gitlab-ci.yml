@@ -1,0 +1,54 @@
+image: cirrusci/flutter:3.32.4
+
+stages:
+  - code-quality
+
+code-quality:
+  stage: code-quality
+  script:
+    - echo "🚀 Starting code quality checks..."
+    - flutter pub get
+    
+    # Step 1: Check auto-fixable issues
+    - echo "🛠️ Checking for auto-fixable issues..."
+    - dart fix --apply
+    - |
+      if [ -n "$(git status --porcelain)" ]; then
+        echo "❌ Code has auto-fixable issues. Please run 'dart fix --apply' locally and commit the changes."
+        echo "Files that would be changed:"
+        git status --porcelain
+        echo "Diff:"
+        git diff
+        exit 1
+      else
+        echo "✅ No auto-fixable issues found."
+      fi
+    
+    # Step 2: Check code formatting
+    - echo "📝 Checking code formatting..."
+    - |
+      if ! dart format --set-exit-if-changed lib/; then
+        echo "❌ Code is not properly formatted."
+        echo "Please run 'fvm dart format lib/ test/' locally and commit the changes."
+        exit 1
+      else
+        echo "✅ Code formatting is correct."
+      fi
+    
+    # Step 3: Run static analysis
+    - echo "🔍 Running static analysis..."
+    - |
+      if ! flutter analyze --fatal-warnings; then
+        echo "❌ Static analysis failed."
+        echo "Please fix the analyzer warnings and errors."
+        exit 1
+      else
+        echo "✅ Static analysis passed."
+      fi
+    
+    - echo "🎉 All code quality checks passed! Your code is ready for merge."
+    
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"

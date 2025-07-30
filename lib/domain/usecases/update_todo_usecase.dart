@@ -7,9 +7,8 @@ import 'package:base/domain/repositories/todo_repository.dart';
 
 @injectable
 class UpdateTodoUseCase extends UseCase<Todo, Todo> {
-  final TodoRepository _repository;
-
   UpdateTodoUseCase(this._repository);
+  final TodoRepository _repository;
 
   @override
   Future<Either<Failure, Todo>> call(Todo todo) async {

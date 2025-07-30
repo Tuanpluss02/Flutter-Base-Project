@@ -16,7 +16,7 @@ class AppTheme {
         surface: AppColors.background,
         onSurface: AppColors.onBackground,
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: AppTextStyles.displayLarge,
         displayMedium: AppTextStyles.displayMedium,
         displaySmall: AppTextStyles.displaySmall,
@@ -44,9 +44,7 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         ),
       ),
@@ -54,9 +52,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           side: const BorderSide(color: AppColors.primary),
         ),
@@ -65,9 +61,7 @@ class AppTheme {
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
       ),
@@ -92,14 +86,15 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -118,17 +113,33 @@ class AppTheme {
         onSurface: AppColors.grey100,
       ),
       textTheme: TextTheme(
-        displayLarge: AppTextStyles.displayLarge.copyWith(color: AppColors.grey50),
-        displayMedium: AppTextStyles.displayMedium.copyWith(color: AppColors.grey50),
-        displaySmall: AppTextStyles.displaySmall.copyWith(color: AppColors.grey50),
-        headlineLarge: AppTextStyles.headlineLarge.copyWith(color: AppColors.grey50),
-        headlineMedium: AppTextStyles.headlineMedium.copyWith(color: AppColors.grey50),
-        headlineSmall: AppTextStyles.headlineSmall.copyWith(color: AppColors.grey50),
+        displayLarge: AppTextStyles.displayLarge.copyWith(
+          color: AppColors.grey50,
+        ),
+        displayMedium: AppTextStyles.displayMedium.copyWith(
+          color: AppColors.grey50,
+        ),
+        displaySmall: AppTextStyles.displaySmall.copyWith(
+          color: AppColors.grey50,
+        ),
+        headlineLarge: AppTextStyles.headlineLarge.copyWith(
+          color: AppColors.grey50,
+        ),
+        headlineMedium: AppTextStyles.headlineMedium.copyWith(
+          color: AppColors.grey50,
+        ),
+        headlineSmall: AppTextStyles.headlineSmall.copyWith(
+          color: AppColors.grey50,
+        ),
         titleLarge: AppTextStyles.titleLarge.copyWith(color: AppColors.grey50),
-        titleMedium: AppTextStyles.titleMedium.copyWith(color: AppColors.grey50),
+        titleMedium: AppTextStyles.titleMedium.copyWith(
+          color: AppColors.grey50,
+        ),
         titleSmall: AppTextStyles.titleSmall.copyWith(color: AppColors.grey50),
         labelLarge: AppTextStyles.labelLarge.copyWith(color: AppColors.grey50),
-        labelMedium: AppTextStyles.labelMedium.copyWith(color: AppColors.grey50),
+        labelMedium: AppTextStyles.labelMedium.copyWith(
+          color: AppColors.grey50,
+        ),
         labelSmall: AppTextStyles.labelSmall.copyWith(color: AppColors.grey50),
         bodyLarge: AppTextStyles.bodyLarge.copyWith(color: AppColors.grey50),
         bodyMedium: AppTextStyles.bodyMedium.copyWith(color: AppColors.grey50),
@@ -145,9 +156,7 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         ),
       ),
@@ -155,9 +164,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           side: const BorderSide(color: AppColors.primary),
         ),
@@ -166,9 +173,7 @@ class AppTheme {
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
           textStyle: AppTextStyles.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
       ),
@@ -193,14 +198,15 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
       cardTheme: CardThemeData(
         color: AppColors.grey800,
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

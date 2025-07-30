@@ -6,8 +6,8 @@ abstract class Failure extends Equatable {
 
 // General failures
 class ServerFailure extends Failure {
-  final String? message;
   const ServerFailure({this.message});
+  final String? message;
 
   @override
   List<Object?> get props => [message];
@@ -19,24 +19,24 @@ class CacheFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  final String? message;
   const NetworkFailure({this.message});
+  final String? message;
 
   @override
   List<Object?> get props => [message];
 }
 
 class ValidationFailure extends Failure {
-  final String message;
   const ValidationFailure({required this.message});
+  final String message;
 
   @override
   List<Object?> get props => [message];
 }
 
 class UnknownFailure extends Failure {
-  final String? message;
   const UnknownFailure({this.message});
+  final String? message;
 
   @override
   List<Object?> get props => [message];

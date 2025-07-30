@@ -9,9 +9,8 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: TodoRepository)
 class TodoRepositoryImpl implements TodoRepository {
-  final TodoApiService _todoApiService;
-
   TodoRepositoryImpl(this._todoApiService);
+  final TodoApiService _todoApiService;
 
   @override
   Future<Either<Failure, List<Todo>>> getTodos() async {

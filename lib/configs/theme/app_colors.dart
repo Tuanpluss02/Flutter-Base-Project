@@ -12,7 +12,7 @@ class AppColors {
   static const Color onBackground = Color(0xFF111827);
   static const Color onSurface = Color(0xFF111827);
   static const Color onError = Color(0xFFFFFFFF);
-  
+
   // Additional colors
   static const Color grey50 = Color(0xFFF9FAFB);
   static const Color grey100 = Color(0xFFF3F4F6);

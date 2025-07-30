@@ -12,10 +12,9 @@ import 'package:base/domain/repositories/user_repository.dart';
 
 @Injectable(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
+  UserRepositoryImpl(this._userApiService, this._userLocalDataSource);
   final UserApiService _userApiService;
   final UserLocalDataSource _userLocalDataSource;
-
-  UserRepositoryImpl(this._userApiService, this._userLocalDataSource);
 
   @override
   Future<Either<Failure, List<User>>> getUsers() async {
@@ -23,24 +22,32 @@ class UserRepositoryImpl implements UserRepository {
       if (await NetworkInfo.isConnected) {
         final userModels = await _userApiService.getUsers();
         final users = userModels.map((model) => model.toEntity()).toList();
-        
+
         // Cache the users
         await _userLocalDataSource.cacheUsers(userModels);
-        
+
         return Right(users);
       } else {
         // Try to get cached data
         final cachedUserModels = await _userLocalDataSource.getCachedUsers();
-        final users = cachedUserModels.map((model) => model.toEntity()).toList();
-        
+        final users = cachedUserModels
+            .map((model) => model.toEntity())
+            .toList();
+
         if (users.isNotEmpty) {
           return Right(users);
         } else {
-          return const Left(NetworkFailure(message: 'No internet connection and no cached data'));
+          return const Left(
+            NetworkFailure(
+              message: 'No internet connection and no cached data',
+            ),
+          );
         }
       }
     } on DioException catch (e) {
-      return Left(ServerFailure(message: DioErrorHandler.handleDioError(e).toString()));
+      return Left(
+        ServerFailure(message: DioErrorHandler.handleDioError(e).toString()),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on CacheException {
@@ -60,7 +67,9 @@ class UserRepositoryImpl implements UserRepository {
         return const Left(NetworkFailure(message: 'No internet connection'));
       }
     } on DioException catch (e) {
-      return Left(ServerFailure(message: DioErrorHandler.handleDioError(e).toString()));
+      return Left(
+        ServerFailure(message: DioErrorHandler.handleDioError(e).toString()),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {
@@ -79,7 +88,9 @@ class UserRepositoryImpl implements UserRepository {
         return const Left(NetworkFailure(message: 'No internet connection'));
       }
     } on DioException catch (e) {
-      return Left(ServerFailure(message: DioErrorHandler.handleDioError(e).toString()));
+      return Left(
+        ServerFailure(message: DioErrorHandler.handleDioError(e).toString()),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {
@@ -92,13 +103,18 @@ class UserRepositoryImpl implements UserRepository {
     try {
       if (await NetworkInfo.isConnected) {
         final userModel = UserModel.fromEntity(user);
-        final updatedUserModel = await _userApiService.updateUser(userModel.id, userModel);
+        final updatedUserModel = await _userApiService.updateUser(
+          userModel.id,
+          userModel,
+        );
         return Right(updatedUserModel.toEntity());
       } else {
         return const Left(NetworkFailure(message: 'No internet connection'));
       }
     } on DioException catch (e) {
-      return Left(ServerFailure(message: DioErrorHandler.handleDioError(e).toString()));
+      return Left(
+        ServerFailure(message: DioErrorHandler.handleDioError(e).toString()),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {
@@ -116,7 +132,9 @@ class UserRepositoryImpl implements UserRepository {
         return const Left(NetworkFailure(message: 'No internet connection'));
       }
     } on DioException catch (e) {
-      return Left(ServerFailure(message: DioErrorHandler.handleDioError(e).toString()));
+      return Left(
+        ServerFailure(message: DioErrorHandler.handleDioError(e).toString()),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {

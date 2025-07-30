@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:base/app/bloc/user_cubit.dart';
 import 'package:base/core/di/injection.dart';
 import 'package:base/domain/entities/user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UsersPage extends StatelessWidget {
   const UsersPage({super.key});
@@ -12,16 +12,11 @@ class UsersPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<UserCubit>()..fetchUsers(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Users'),
-          centerTitle: true,
-        ),
+        appBar: AppBar(title: const Text('Users'), centerTitle: true),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserInitial || state is UserLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             } else if (state is UserLoaded) {
               return RefreshIndicator(
                 onRefresh: () async {
@@ -78,12 +73,8 @@ class UsersPage extends StatelessWidget {
 }
 
 class UserCard extends StatelessWidget {
+  const UserCard({required this.user, super.key});
   final User user;
-
-  const UserCard({
-    super.key,
-    required this.user,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +104,15 @@ class UserCard extends StatelessWidget {
                     children: [
                       Text(
                         user.name,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'ID: ${user.id}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),
@@ -130,26 +120,11 @@ class UserCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _buildInfoRow(
-              context,
-              Icons.email,
-              'Email',
-              user.email,
-            ),
+            _buildInfoRow(context, Icons.email, 'Email', user.email),
             const SizedBox(height: 8),
-            _buildInfoRow(
-              context,
-              Icons.phone,
-              'Phone',
-              user.phone ?? '',
-            ),
+            _buildInfoRow(context, Icons.phone, 'Phone', user.phone ?? ''),
             const SizedBox(height: 8),
-            _buildInfoRow(
-              context,
-              Icons.web,
-              'Website',
-              user.website ?? '',
-            ),
+            _buildInfoRow(context, Icons.web, 'Website', user.website ?? ''),
           ],
         ),
       ),
@@ -164,24 +139,17 @@ class UserCard extends StatelessWidget {
   ) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: Colors.grey[600],
-        ),
+        Icon(icon, size: 16, color: Colors.grey[600]),
         const SizedBox(width: 8),
         Text(
           '$label: ',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[700],
-              ),
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[700],
+          ),
         ),
         Expanded(
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          child: Text(value, style: Theme.of(context).textTheme.bodySmall),
         ),
       ],
     );

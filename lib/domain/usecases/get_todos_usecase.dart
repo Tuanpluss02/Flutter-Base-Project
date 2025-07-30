@@ -7,9 +7,8 @@ import 'package:base/domain/repositories/todo_repository.dart';
 
 @injectable
 class GetTodosUseCase extends UseCaseWithoutParams<List<Todo>> {
-  final TodoRepository _repository;
-
   GetTodosUseCase(this._repository);
+  final TodoRepository _repository;
 
   @override
   Future<Either<Failure, List<Todo>>> call() async {
