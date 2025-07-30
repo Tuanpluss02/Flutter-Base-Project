@@ -77,10 +77,45 @@ fvm flutter packages pub run build_runner build --delete-conflicting-outputs
 
 ### 5. Setup Development Environment
 
+The project includes a comprehensive development environment setup script that manages git hooks and development tools.
+
+#### Install Git Hooks (Default)
 ```bash
-# Setup pre-commit hooks and development tools
+# Install pre-commit hooks and setup development tools
 ./scripts/setup_dev.sh
+
+# Alternative commands (same result)
+./scripts/setup_dev.sh install
+./scripts/setup_dev.sh add
 ```
+
+#### Git Hook Management Commands
+```bash
+# Check current git hooks status
+./scripts/setup_dev.sh status
+
+# Remove git hooks
+./scripts/setup_dev.sh remove
+./scripts/setup_dev.sh uninstall
+
+# Show help and available commands
+./scripts/setup_dev.sh help
+```
+
+#### What Gets Configured
+- ✅ Pre-commit hook that auto-formats code before each commit
+- ✅ Static analysis checks before commits
+- ✅ Automatic code fixing with `dart fix --apply`
+- ✅ Integration with CI/CD workflows for auto-formatting
+
+#### Git Hook Features
+The pre-commit hook automatically:
+1. Detects staged Dart files
+2. Applies `dart fix --apply` to fix common issues
+3. Formats code with `dart format`
+4. Re-stages formatted files
+5. Runs `flutter analyze` with fatal warnings
+6. Prevents commit if analysis fails
 
 ## Environment Configuration
 
@@ -215,6 +250,20 @@ fvm flutter --version
 
 # If not, use FVM commands
 fvm use 3.32.4
+```
+
+#### Git hooks setup issues
+```bash
+# Check git hooks status
+./scripts/setup_dev.sh status
+
+# Remove and reinstall git hooks
+./scripts/setup_dev.sh remove
+./scripts/setup_dev.sh install
+
+# Verify git hooks are working
+git add .
+git commit -m "test commit" --dry-run
 ```
 
 #### Build failures

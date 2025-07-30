@@ -3,9 +3,27 @@
 ### 1. Pre-commit Hook 
 Automatically format code before each commit:
 
+#### Installation
 ```bash
-# Install pre-commit hook
+# Install pre-commit hook (default)
 ./scripts/setup_dev.sh
+
+# Alternative installation commands
+./scripts/setup_dev.sh install
+./scripts/setup_dev.sh add
+```
+
+#### Management Commands
+```bash
+# Check git hooks status
+./scripts/setup_dev.sh status
+
+# Remove git hooks
+./scripts/setup_dev.sh remove
+./scripts/setup_dev.sh uninstall
+
+# Show help and available commands
+./scripts/setup_dev.sh help
 ```
 
 **How it works:**
@@ -13,6 +31,7 @@ Automatically format code before each commit:
 - Only formats staged Dart files
 - Automatically re-adds formatted files to staging area
 - Fails commit if static analysis errors exist
+- Provides colored output for better user experience
 
 ### 2. CI/CD Auto-Format (GitHub Actions & GitLab CI)
 Automatically format code when pushing to repository:
@@ -73,11 +92,27 @@ Create CI/CD variable:
 
 ### Pre-commit hook not working
 ```bash
-# Check if file is executable
+# Check git hooks status
+./scripts/setup_dev.sh status
+
+# Check if file exists and is executable
 ls -la .git/hooks/pre-commit
 
-# Reinstall
-./scripts/setup_dev.sh
+# Reinstall git hooks
+./scripts/setup_dev.sh install
+
+# Or remove and reinstall
+./scripts/setup_dev.sh remove
+./scripts/setup_dev.sh install
+```
+
+### Completely remove git hooks
+```bash
+# Remove all git hooks
+./scripts/setup_dev.sh remove
+
+# Verify removal
+./scripts/setup_dev.sh status
 ```
 
 ### CI/CD cannot push
@@ -87,6 +122,21 @@ ls -la .git/hooks/pre-commit
 
 ### Formatting not working
 ```bash
-# Run manual to debug
+# Run manual formatting to debug
 ./scripts/fix_lint.sh
+
+# Check if FVM is properly configured
+fvm flutter --version
+
+# Verify Flutter analyze works
+fvm flutter analyze
+```
+
+### Git hook template missing
+```bash
+# Check if template exists
+ls -la scripts/pre-commit-template
+
+# If missing, the setup script will show an error
+./scripts/setup_dev.sh install
 ```

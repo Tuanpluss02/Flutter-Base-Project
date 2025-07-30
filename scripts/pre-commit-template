@@ -1,0 +1,58 @@
+#!/bin/bash
+
+echo "🔍 Pre-commit hook: Checking and fixing code quality..."
+
+# Check if this is a merge commit
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+# Get list of staged Dart files
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.dart$')
+
+if [ -z "$staged_files" ]; then
+    echo "✅ No Dart files to check"
+    exit 0
+fi
+
+echo "📝 Found Dart files to check: $staged_files"
+
+# Apply dart fix to staged files
+echo "🛠️ Applying dart fix..."
+fvm dart fix --apply
+
+# Format staged files
+echo "📝 Formatting code..."
+for file in $staged_files; do
+    if [ -f "$file" ]; then
+        fvm dart format "$file"
+    fi
+done
+
+# Check if any files were modified
+modified_files=$(git diff --name-only)
+if [ -n "$modified_files" ]; then
+    echo "📤 Auto-formatted files detected. Adding to commit..."
+    
+    # Add the formatted files back to staging
+    for file in $staged_files; do
+        if [ -f "$file" ]; then
+            git add "$file"
+        fi
+    done
+    
+    echo "✅ Files have been auto-formatted and re-staged"
+fi
+
+# Run analysis on staged files
+echo "🔍 Running static analysis..."
+if ! fvm flutter analyze --fatal-warnings; then
+    echo "❌ Static analysis failed. Please fix the issues before committing."
+    exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"
+exit 0
