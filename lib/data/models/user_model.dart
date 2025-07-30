@@ -1,7 +1,6 @@
 import 'package:base/domain/entities/user.dart';
 
 class UserModel {
-
   const UserModel({
     required this.id,
     required this.name,

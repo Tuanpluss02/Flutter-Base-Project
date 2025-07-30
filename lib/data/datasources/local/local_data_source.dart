@@ -5,7 +5,6 @@ import 'package:base/data/models/user_model.dart';
 
 @injectable
 class LocalDataSource {
-
   LocalDataSource(this._prefs);
   final SharedPreferences _prefs;
 
@@ -26,7 +25,9 @@ class LocalDataSource {
 
   Future<void> cacheUsers(List<UserModel> users) async {
     try {
-      final String usersJson = json.encode(users.map((user) => user.toJson()).toList());
+      final String usersJson = json.encode(
+        users.map((user) => user.toJson()).toList(),
+      );
       await _prefs.setString(_usersKey, usersJson);
     } catch (e) {
       // Handle error silently for cache operations

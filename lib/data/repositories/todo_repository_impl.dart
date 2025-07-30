@@ -9,7 +9,6 @@ import 'package:injectable/injectable.dart';
 
 @Injectable(as: TodoRepository)
 class TodoRepositoryImpl implements TodoRepository {
-
   TodoRepositoryImpl(this._todoApiService);
   final TodoApiService _todoApiService;
 

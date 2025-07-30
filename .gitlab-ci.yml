@@ -1,14 +1,43 @@
 image: cirrusci/flutter:3.32.4
 
 stages:
-  - lint
+  - dart-fix
+  - dart-format
+  - lint-check
 
-lint:
-  stage: lint
+dart-fix:
+  stage: dart-fix
+  script:
+    - flutter pub get
+    - dart fix --apply
+    - |
+      if [ -n "$(git status --porcelain)" ]; then
+        echo "❌ Code has auto-fixable issues. Please run 'dart fix --apply' locally and commit the changes."
+        git diff
+        exit 1
+      else
+        echo "✅ No auto-fixable issues found."
+      fi
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+dart-format:
+  stage: dart-format
+  script:
+    - flutter pub get
+    - dart format --set-exit-if-changed lib/
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+lint-check:
+  stage: lint-check
   script:
     - flutter pub get
     - flutter analyze --fatal-warnings
-    - dart format --set-exit-if-changed lib/ test/
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"

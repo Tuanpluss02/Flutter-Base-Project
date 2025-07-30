@@ -7,7 +7,6 @@ import 'package:base/domain/repositories/user_repository.dart';
 
 @injectable
 class GetUserByIdUseCase extends UseCase<User, int> {
-
   GetUserByIdUseCase(this._repository);
   final UserRepository _repository;
 

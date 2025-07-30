@@ -7,7 +7,6 @@ import 'package:base/domain/repositories/todo_repository.dart';
 
 @injectable
 class GetTodoByIdUseCase extends UseCase<Todo, int> {
-
   GetTodoByIdUseCase(this._repository);
   final TodoRepository _repository;
 

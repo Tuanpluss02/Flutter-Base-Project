@@ -7,7 +7,6 @@ import 'package:base/domain/repositories/user_repository.dart';
 
 @injectable
 class GetUsersUseCase extends UseCaseWithoutParams<List<User>> {
-
   GetUsersUseCase(this._repository);
   final UserRepository _repository;
 

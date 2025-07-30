@@ -5,7 +5,6 @@ part '../../generated/data/models/todo_model.g.dart';
 
 @JsonSerializable()
 class TodoModel {
-
   TodoModel({
     required this.userId,
     required this.id,
@@ -32,11 +31,6 @@ class TodoModel {
   Map<String, dynamic> toJson() => _$TodoModelToJson(this);
 
   Todo toEntity() {
-    return Todo(
-      userId: userId,
-      id: id,
-      title: title,
-      completed: completed,
-    );
+    return Todo(userId: userId, id: id, title: title, completed: completed);
   }
 }

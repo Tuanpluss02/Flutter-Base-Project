@@ -8,7 +8,7 @@ class NetworkInfo {
       final dio = Dio();
       dio.options.connectTimeout = const Duration(seconds: 5);
       dio.options.receiveTimeout = const Duration(seconds: 5);
-      
+
       // Try to reach a reliable endpoint
       final response = await dio.get('https://www.google.com');
       return response.statusCode == 200;
@@ -23,7 +23,7 @@ class NetworkInfo {
       final dio = Dio();
       dio.options.connectTimeout = const Duration(seconds: 5);
       dio.options.receiveTimeout = const Duration(seconds: 5);
-      
+
       final response = await dio.get(host);
       return response.statusCode == 200;
     } catch (e) {
@@ -50,7 +50,8 @@ class DioErrorHandler {
 
       case DioExceptionType.connectionError:
         return const NetworkException(
-          message: 'No internet connection. Please check your network settings.',
+          message:
+              'No internet connection. Please check your network settings.',
         );
 
       case DioExceptionType.badCertificate:

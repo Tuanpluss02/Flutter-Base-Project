@@ -1,5 +1,4 @@
 class Todo {
-
   const Todo({
     required this.userId,
     required this.id,
@@ -11,12 +10,7 @@ class Todo {
   final String title;
   final bool completed;
 
-  Todo copyWith({
-    int? userId,
-    int? id,
-    String? title,
-    bool? completed,
-  }) {
+  Todo copyWith({int? userId, int? id, String? title, bool? completed}) {
     return Todo(
       userId: userId ?? this.userId,
       id: id ?? this.id,
@@ -37,10 +31,7 @@ class Todo {
 
   @override
   int get hashCode {
-    return userId.hashCode ^
-        id.hashCode ^
-        title.hashCode ^
-        completed.hashCode;
+    return userId.hashCode ^ id.hashCode ^ title.hashCode ^ completed.hashCode;
   }
 
   @override
