@@ -34,6 +34,7 @@ class TranslationsVi extends Translations {
 	// Translations
 	@override late final _TranslationsAppVi app = _TranslationsAppVi._(_root);
 	@override late final _TranslationsCommonVi common = _TranslationsCommonVi._(_root);
+	@override late final _TranslationsThemeVi theme = _TranslationsThemeVi._(_root);
 	@override late final _TranslationsLanguageVi language = _TranslationsLanguageVi._(_root);
 	@override late final _TranslationsHomeVi home = _TranslationsHomeVi._(_root);
 }
@@ -66,6 +67,19 @@ class _TranslationsCommonVi extends TranslationsCommonEn {
 	@override String get success => 'Thành công';
 	@override String get retry => 'Thử lại';
 	@override String get close => 'Đóng';
+}
+
+// Path: theme
+class _TranslationsThemeVi extends TranslationsThemeEn {
+	_TranslationsThemeVi._(TranslationsVi root) : this._root = root, super.internal(root);
+
+	final TranslationsVi _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Cài đặt Chế độ Theme';
+	@override String get light => 'Sáng';
+	@override String get dark => 'Tối';
+	@override String get system => 'Hệ thống';
 }
 
 // Path: language

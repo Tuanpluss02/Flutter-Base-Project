@@ -15,6 +15,12 @@
     "retry": "Retry",
     "close": "Close"
   },
+  "theme": {
+    "title": "Theme Settings",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "language": {
     "title": "Language Settings",
     "english": "English",

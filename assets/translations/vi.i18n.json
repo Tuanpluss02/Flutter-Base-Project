@@ -15,6 +15,12 @@
     "retry": "Thử lại",
     "close": "Đóng"
   },
+  "theme": {
+    "title": "Cài đặt Chế độ Theme",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống"
+  },
   "language": {
     "title": "Cài đặt Ngôn ngữ",
     "english": "English",

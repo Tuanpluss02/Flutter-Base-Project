@@ -164,14 +164,14 @@ class $AssetsSvgsGen {
 class $AssetsTranslationsGen {
   const $AssetsTranslationsGen();
 
-  /// File path: assets/translations/strings.i18n.json
-  String get stringsI18n => 'assets/translations/strings.i18n.json';
+  /// File path: assets/translations/en.i18n.json
+  String get enI18n => 'assets/translations/en.i18n.json';
 
-  /// File path: assets/translations/strings_vi.i18n.json
-  String get stringsViI18n => 'assets/translations/strings_vi.i18n.json';
+  /// File path: assets/translations/vi.i18n.json
+  String get viI18n => 'assets/translations/vi.i18n.json';
 
   /// List of all assets
-  List<String> get values => [stringsI18n, stringsViI18n];
+  List<String> get values => [enI18n, viI18n];
 }
 
 class Assets {

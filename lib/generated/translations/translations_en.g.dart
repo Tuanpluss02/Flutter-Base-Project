@@ -36,6 +36,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final TranslationsAppEn app = TranslationsAppEn.internal(_root);
 	late final TranslationsCommonEn common = TranslationsCommonEn.internal(_root);
+	late final TranslationsThemeEn theme = TranslationsThemeEn.internal(_root);
 	late final TranslationsLanguageEn language = TranslationsLanguageEn.internal(_root);
 	late final TranslationsHomeEn home = TranslationsHomeEn.internal(_root);
 }
@@ -68,6 +69,19 @@ class TranslationsCommonEn {
 	String get success => 'Success';
 	String get retry => 'Retry';
 	String get close => 'Close';
+}
+
+// Path: theme
+class TranslationsThemeEn {
+	TranslationsThemeEn.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Theme Settings';
+	String get light => 'Light';
+	String get dark => 'Dark';
+	String get system => 'System';
 }
 
 // Path: language

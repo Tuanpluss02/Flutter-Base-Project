@@ -1,6 +1,6 @@
 import 'package:base/app/bloc/todo_cubit.dart';
+import 'package:base/app/pages/app_settings_page.dart';
 import 'package:base/app/pages/home_page.dart';
-import 'package:base/app/pages/language_settings_page.dart';
 import 'package:base/app/pages/todos/todos_page.dart';
 import 'package:base/app/pages/users/users_page.dart';
 import 'package:base/app/widgets/global_error_screen.dart';
@@ -12,7 +12,7 @@ class AppRoutes {
   static const String home = '/';
   static const String users = '/users';
   static const String todos = '/todos';
-  static const String languageSettings = '/language-settings';
+  static const String appSettings = '/app-settings';
 }
 
 class AppRouter {
@@ -38,9 +38,9 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutes.languageSettings,
-        name: 'language-settings',
-        builder: (context, state) => const LanguageSettingsPage(),
+        path: AppRoutes.appSettings,
+        name: 'app-settings',
+        builder: (context, state) => const AppSettingsPage(),
       ),
     ],
     errorBuilder: (context, state) => const GlobalErrorScreen(),

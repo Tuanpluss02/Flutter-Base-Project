@@ -1,3 +1,4 @@
+import 'package:base/configs/router/app_router.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -72,7 +73,7 @@ class HomePage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          context.push('/language-settings');
+                          context.push(AppRoutes.appSettings);
                         },
                         icon: const Icon(Icons.settings),
                         label: Text(tr.language.select),

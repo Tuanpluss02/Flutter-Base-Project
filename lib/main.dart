@@ -1,9 +1,8 @@
-import 'package:base/app/bloc/language/language_cubit.dart';
+import 'package:base/app/bloc/app/app_cubit.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
 import 'package:base/core/di/injection.dart';
-import 'package:base/core/services/language_service.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +20,6 @@ void main() async {
   // Initialize slang localization
   LocaleSettings.useDeviceLocale();
 
-  // Initialize language service
-  final languageService = getIt<LanguageService>();
-  await languageService.initialize();
-
   runApp(TranslationProvider(child: const MyApp()));
 }
 
@@ -34,15 +29,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<LanguageCubit>()..initialize(),
-      child: BlocBuilder<LanguageCubit, LanguageState>(
+      create: (context) => getIt<AppCubit>()..initialize(),
+      child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return MaterialApp.router(
             title: FlavorConfig.title,
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.system,
+            themeMode: state.themeMode,
             routerConfig: AppRouter.router,
             locale: state.currentLocale?.flutterLocale,
             supportedLocales: AppLocale.values.map((e) => e.flutterLocale),
