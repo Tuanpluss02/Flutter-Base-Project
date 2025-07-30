@@ -1,4 +1,5 @@
 import 'package:base/configs/router/app_router.dart';
+import 'package:base/core/services/app_navigator.dart';
 import 'package:base/generated/assets/assets.gen.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:base/presentation/shared/environment_info_widget.dart';
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
-                onPressed: () => context.go(AppRoutes.todos),
+                onPressed: () => AppNavigator.push(AppRoutes.todos),
                 icon: const Icon(Icons.checklist),
                 label: const Text('View Todos'),
                 style: ElevatedButton.styleFrom(
@@ -62,7 +63,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 16),
               OutlinedButton.icon(
                 onPressed: () {
-                  context.push(AppRoutes.appSettings);
+                  AppNavigator.push(AppRoutes.appSettings);
                 },
                 icon: const Icon(Icons.settings),
                 label: Text(tr.theme.title),

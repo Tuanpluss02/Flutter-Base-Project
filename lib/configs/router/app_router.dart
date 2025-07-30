@@ -26,17 +26,14 @@ class AppRouter {
     routes: [
       GoRoute(
         path: AppRoutes.home,
-        name: 'home',
         builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: AppRoutes.users,
-        name: 'users',
         builder: (context, state) => const UsersPage(),
       ),
       GoRoute(
         path: AppRoutes.todos,
-        name: 'todos',
         builder: (context, state) => BlocProvider<TodoCubit>(
           create: (context) => getIt<TodoCubit>()..fetchTodos(),
           child: const TodosPage(),
@@ -44,7 +41,6 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.appSettings,
-        name: 'app-settings',
         builder: (context, state) => const AppSettingsPage(),
       ),
     ],
