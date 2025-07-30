@@ -4,7 +4,6 @@ import 'package:base/generated/assets/assets.gen.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:base/presentation/shared/environment_info_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -44,7 +43,7 @@ class HomePage extends StatelessWidget {
               const EnvironmentInfoWidget(),
               const SizedBox(height: 48),
               ElevatedButton.icon(
-                onPressed: () => context.go(AppRoutes.users),
+                onPressed: () => AppNavigator.push(AppRoutes.users),
                 icon: const Icon(Icons.people),
                 label: const Text('View Users'),
                 style: ElevatedButton.styleFrom(

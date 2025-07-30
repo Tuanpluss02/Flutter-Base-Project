@@ -1,4 +1,4 @@
-part of 'app_cubit.dart';
+part of 'app_bloc.dart';
 
 class AppState extends Equatable {
   const AppState({
@@ -6,6 +6,7 @@ class AppState extends Equatable {
     this.currentLocale,
     this.supportedLocales = const [],
     this.themeMode = ThemeMode.system,
+    this.connectivityStatus = ConnectivityStatus.disconnected,
     this.error,
   });
 
@@ -13,6 +14,7 @@ class AppState extends Equatable {
   final AppLocale? currentLocale;
   final List<AppLocale> supportedLocales;
   final ThemeMode themeMode;
+  final ConnectivityStatus connectivityStatus;
   final String? error;
 
   AppState copyWith({
@@ -20,6 +22,7 @@ class AppState extends Equatable {
     AppLocale? currentLocale,
     List<AppLocale>? supportedLocales,
     ThemeMode? themeMode,
+    ConnectivityStatus? connectivityStatus,
     String? error,
   }) {
     return AppState(
@@ -27,6 +30,7 @@ class AppState extends Equatable {
       currentLocale: currentLocale ?? this.currentLocale,
       supportedLocales: supportedLocales ?? this.supportedLocales,
       themeMode: themeMode ?? this.themeMode,
+      connectivityStatus: connectivityStatus ?? this.connectivityStatus,
       error: error,
     );
   }
@@ -37,6 +41,7 @@ class AppState extends Equatable {
     currentLocale,
     supportedLocales,
     themeMode,
+    connectivityStatus,
     error,
   ];
 }

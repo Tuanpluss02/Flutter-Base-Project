@@ -8,9 +8,10 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:base/app/bloc/app_cubit.dart' as _i316;
+import 'package:base/app/bloc/app_bloc.dart' as _i818;
 import 'package:base/core/network/alice_service.dart' as _i74;
 import 'package:base/core/network/network_module.dart' as _i899;
+import 'package:base/core/services/connectivity_service.dart' as _i104;
 import 'package:base/core/services/language_service.dart' as _i242;
 import 'package:base/core/services/theme_service.dart' as _i610;
 import 'package:base/data/datasources/local/local_data_source.dart' as _i907;
@@ -42,6 +43,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final networkModule = _$NetworkModule();
+    gh.factory<_i104.ConnectivityService>(() => _i104.ConnectivityService());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => networkModule.sharedPreferences,
       preResolve: true,
@@ -59,12 +61,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i907.LocalDataSource>(
       () => _i907.LocalDataSource(gh<_i460.SharedPreferences>()),
     );
+    gh.singleton<_i818.AppBloc>(
+      () => _i818.AppBloc(
+        gh<_i242.LanguageService>(),
+        gh<_i610.ThemeService>(),
+        gh<_i104.ConnectivityService>(),
+      ),
+    );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i74.AliceService>()),
-    );
-    gh.factory<_i316.AppCubit>(
-      () =>
-          _i316.AppCubit(gh<_i242.LanguageService>(), gh<_i610.ThemeService>()),
     );
     gh.factory<_i8.UserApiService>(() => _i8.UserApiService(gh<_i361.Dio>()));
     gh.factory<_i10.TodoApiService>(() => _i10.TodoApiService(gh<_i361.Dio>()));

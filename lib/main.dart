@@ -1,4 +1,4 @@
-import 'package:base/app/bloc/app_cubit.dart';
+import 'package:base/app/bloc/app_bloc.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AppCubit>()..initialize(),
-      child: BlocBuilder<AppCubit, AppState>(
+      create: (context) => getIt<AppBloc>()..add(const AppInitializeEvent()),
+      child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return MaterialApp.router(
             title: FlavorConfig.title,

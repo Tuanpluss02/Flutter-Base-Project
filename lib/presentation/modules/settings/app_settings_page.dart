@@ -1,4 +1,4 @@
-import 'package:base/app/bloc/app_cubit.dart';
+import 'package:base/app/bloc/app_bloc.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ class AppSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(tr.language.title)),
-      body: BlocBuilder<AppCubit, AppState>(
+      body: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -29,7 +29,8 @@ class AppSettingsPage extends StatelessWidget {
                   Text(state.error!),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => context.read<AppCubit>().initialize(),
+                    onPressed: () =>
+                        context.read<AppBloc>().add(const AppInitializeEvent()),
                     child: Text(tr.common.retry),
                   ),
                 ],
@@ -55,7 +56,7 @@ class AppSettingsPage extends StatelessWidget {
                       ...state.supportedLocales.map(
                         (locale) => RadioListTile<AppLocale>(
                           title: Text(
-                            context.read<AppCubit>().getLanguageDisplayName(
+                            context.read<AppBloc>().getLanguageDisplayName(
                               locale,
                             ),
                           ),
@@ -63,7 +64,9 @@ class AppSettingsPage extends StatelessWidget {
                           groupValue: state.currentLocale,
                           onChanged: (value) {
                             if (value != null) {
-                              context.read<AppCubit>().changeLanguage(value);
+                              context.read<AppBloc>().add(
+                                AppChangeLanguageEvent(value),
+                              );
                             }
                           },
                         ),
@@ -82,14 +85,14 @@ class AppSettingsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Theme Settings', // Using hardcoded string since theme translations don't exist
+                        tr.theme.title,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 16),
                       ...ThemeMode.values.map(
                         (themeMode) => RadioListTile<ThemeMode>(
                           title: Text(
-                            context.read<AppCubit>().getThemeModeDisplayName(
+                            context.read<AppBloc>().getThemeModeDisplayName(
                               themeMode,
                             ),
                           ),
@@ -97,7 +100,9 @@ class AppSettingsPage extends StatelessWidget {
                           groupValue: state.themeMode,
                           onChanged: (value) {
                             if (value != null) {
-                              context.read<AppCubit>().changeTheme(value);
+                              context.read<AppBloc>().add(
+                                AppChangeThemeEvent(value),
+                              );
                             }
                           },
                         ),
