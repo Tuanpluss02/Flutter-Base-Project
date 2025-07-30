@@ -1,4 +1,4 @@
-import 'package:base/app/bloc/app/app_cubit.dart';
+import 'package:base/app/bloc/app_cubit.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
@@ -20,7 +20,7 @@ void main() async {
   // Initialize slang localization
   LocaleSettings.useDeviceLocale();
 
-  runApp(TranslationProvider(child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

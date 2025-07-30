@@ -33,10 +33,10 @@ class AppState extends Equatable {
 
   @override
   List<Object?> get props => [
-        isLoading,
-        currentLocale,
-        supportedLocales,
-        themeMode,
-        error,
-      ];
+    isLoading,
+    currentLocale,
+    supportedLocales,
+    themeMode,
+    error,
+  ];
 }

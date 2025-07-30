@@ -76,7 +76,7 @@ class _TranslationsThemeVi extends TranslationsThemeEn {
 	final TranslationsVi _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Cài đặt Chế độ Theme';
+	@override String get title => 'Giao diện';
 	@override String get light => 'Sáng';
 	@override String get dark => 'Tối';
 	@override String get system => 'Hệ thống';

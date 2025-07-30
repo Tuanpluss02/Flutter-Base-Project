@@ -1,10 +1,10 @@
-import 'package:base/app/bloc/todo_cubit.dart';
-import 'package:base/app/pages/app_settings_page.dart';
-import 'package:base/app/pages/home_page.dart';
-import 'package:base/app/pages/todos/todos_page.dart';
-import 'package:base/app/pages/users/users_page.dart';
-import 'package:base/app/widgets/global_error_screen.dart';
 import 'package:base/core/di/injection.dart';
+import 'package:base/presentation/modules/home/home_page.dart';
+import 'package:base/presentation/modules/settings/app_settings_page.dart';
+import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart';
+import 'package:base/presentation/modules/todo/todos_page.dart';
+import 'package:base/presentation/modules/users/users_page.dart';
+import 'package:base/presentation/shared/global_error_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 

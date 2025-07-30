@@ -91,9 +91,9 @@ class TranslationsLanguageEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Language Settings';
+	String get title => 'Language';
 	String get english => 'English';
-	String get vietnamese => 'Tiếng Việt';
+	String get vietnamese => 'Vietnamese';
 	String get current => 'Current Language';
 	String get select => 'Select Language';
 }

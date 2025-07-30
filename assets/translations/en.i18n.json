@@ -22,9 +22,9 @@
     "system": "System"
   },
   "language": {
-    "title": "Language Settings",
+    "title": "Language",
     "english": "English",
-    "vietnamese": "Tiếng Việt",
+    "vietnamese": "Vietnamese",
     "current": "Current Language",
     "select": "Select Language"
   },

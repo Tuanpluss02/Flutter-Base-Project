@@ -11,7 +11,7 @@ part 'app_state.dart';
 @injectable
 class AppCubit extends Cubit<AppState> {
   AppCubit(this._languageService, this._themeService) : super(const AppState());
-  
+
   final LanguageService _languageService;
   final ThemeService _themeService;
 
@@ -21,7 +21,7 @@ class AppCubit extends Cubit<AppState> {
       // Initialize both services
       await _languageService.initialize();
       await _themeService.initialize();
-      
+
       emit(
         state.copyWith(
           isLoading: false,
@@ -40,11 +40,7 @@ class AppCubit extends Cubit<AppState> {
     try {
       await _languageService.setLocale(locale);
       emit(
-        state.copyWith(
-          isLoading: false, 
-          currentLocale: locale, 
-          error: null,
-        ),
+        state.copyWith(isLoading: false, currentLocale: locale, error: null),
       );
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
@@ -55,13 +51,7 @@ class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(isLoading: true));
     try {
       await _themeService.setThemeMode(themeMode);
-      emit(
-        state.copyWith(
-          isLoading: false, 
-          themeMode: themeMode, 
-          error: null,
-        ),
-      );
+      emit(state.copyWith(isLoading: false, themeMode: themeMode, error: null));
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }

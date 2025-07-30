@@ -1,4 +1,4 @@
-import 'package:base/app/bloc/app/app_cubit.dart';
+import 'package:base/app/bloc/app_cubit.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +9,7 @@ class AppSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(tr.language.title),
-      ),
+      appBar: AppBar(title: Text(tr.language.title)),
       body: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           if (state.isLoading) {
@@ -57,7 +55,9 @@ class AppSettingsPage extends StatelessWidget {
                       ...state.supportedLocales.map(
                         (locale) => RadioListTile<AppLocale>(
                           title: Text(
-                            context.read<AppCubit>().getLanguageDisplayName(locale),
+                            context.read<AppCubit>().getLanguageDisplayName(
+                              locale,
+                            ),
                           ),
                           value: locale,
                           groupValue: state.currentLocale,
@@ -73,7 +73,7 @@ class AppSettingsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Theme Section
               Card(
                 child: Padding(
@@ -89,7 +89,9 @@ class AppSettingsPage extends StatelessWidget {
                       ...ThemeMode.values.map(
                         (themeMode) => RadioListTile<ThemeMode>(
                           title: Text(
-                            context.read<AppCubit>().getThemeModeDisplayName(themeMode),
+                            context.read<AppCubit>().getThemeModeDisplayName(
+                              themeMode,
+                            ),
                           ),
                           value: themeMode,
                           groupValue: state.themeMode,
