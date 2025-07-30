@@ -1,0 +1,82 @@
+name: Auto Format Code
+
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  auto-format:
+    name: Auto Format & Fix Code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.4'
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: 🛠️ Apply auto-fixes
+        run: |
+          echo "Applying dart fix..."
+          dart fix --apply
+
+      - name: 📝 Format code
+        run: |
+          echo "Formatting code..."
+          dart format lib/ test/
+
+      - name: 🔍 Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Files changed:"
+            git status --porcelain
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: 📤 Commit and push changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "🤖 Auto-format: Apply dart fix and format code
+
+          - Applied dart fix --apply
+          - Formatted code with dart format
+          
+          [skip ci]"
+          git push
+
+      - name: ✅ Auto-format completed
+        run: |
+          if [ "${{ steps.verify-changed-files.outputs.changed }}" == "true" ]; then
+            echo "🎉 Code has been automatically formatted and committed!"
+          else
+            echo "✅ Code was already properly formatted!"
+          fi

@@ -1,5 +1,7 @@
-import 'package:base/app/widgets/environment_info_widget.dart';
 import 'package:base/configs/router/app_router.dart';
+import 'package:base/generated/assets/assets.gen.dart';
+import 'package:base/generated/translations/translations.g.dart';
+import 'package:base/presentation/shared/environment_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,11 +22,12 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(
-                Icons.architecture,
-                size: 100,
-                color: Color(0xFF6200EE),
-              ),
+              // const Icon(
+              //   Icons.architecture,
+              //   size: 100,
+              //   color: Color(0xFF6200EE),
+              // ),
+              SizedBox(height: 200, child: Assets.rives.riveTest.rive()),
               const SizedBox(height: 32),
               const Text(
                 'Welcome to Flutter Clean Architecture Base Project',
@@ -59,12 +62,10 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 16),
               OutlinedButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Feature coming soon!')),
-                  );
+                  context.push(AppRoutes.appSettings);
                 },
                 icon: const Icon(Icons.settings),
-                label: const Text('Settings'),
+                label: Text(tr.theme.title),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),

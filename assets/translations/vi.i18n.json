@@ -1,0 +1,36 @@
+{
+  "app": {
+    "title": "Ứng dụng Base",
+    "welcome": "Chào mừng đến với Ứng dụng Base"
+  },
+  "common": {
+    "ok": "Đồng ý",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "retry": "Thử lại",
+    "close": "Đóng"
+  },
+  "theme": {
+    "title": "Giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống"
+  },
+  "language": {
+    "title": "Cài đặt Ngôn ngữ",
+    "english": "English",
+    "vietnamese": "Tiếng Việt",
+    "current": "Ngôn ngữ hiện tại",
+    "select": "Chọn ngôn ngữ"
+  },
+  "home": {
+    "title": "Trang chủ",
+    "greeting": "Xin chào, {{name}}!",
+    "description": "Đây là ứng dụng Flutter mẫu với bản địa hóa slang."
+  }
+}

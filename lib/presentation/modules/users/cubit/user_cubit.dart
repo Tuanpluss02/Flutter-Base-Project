@@ -4,22 +4,7 @@ import 'package:base/domain/usecases/get_users_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-// States
-abstract class UserState {}
-
-class UserInitial extends UserState {}
-
-class UserLoading extends UserState {}
-
-class UserLoaded extends UserState {
-  UserLoaded(this.users);
-  final List<User> users;
-}
-
-class UserError extends UserState {
-  UserError(this.message);
-  final String message;
-}
+part 'user_state.dart';
 
 // Cubit
 @injectable

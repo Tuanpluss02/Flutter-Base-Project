@@ -1,5 +1,5 @@
-import 'package:base/app/bloc/todo_cubit.dart';
 import 'package:base/domain/entities/todo.dart';
+import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

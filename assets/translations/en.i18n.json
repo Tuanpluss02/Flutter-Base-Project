@@ -1,0 +1,36 @@
+{
+  "app": {
+    "title": "Base App",
+    "welcome": "Welcome to Base App"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "retry": "Retry",
+    "close": "Close"
+  },
+  "theme": {
+    "title": "Theme Settings",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "current": "Current Language",
+    "select": "Select Language"
+  },
+  "home": {
+    "title": "Home",
+    "greeting": "Hello, {{name}}!",
+    "description": "This is a sample Flutter app with slang localization."
+  }
+}

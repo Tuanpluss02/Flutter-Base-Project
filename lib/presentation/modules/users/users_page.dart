@@ -1,6 +1,6 @@
-import 'package:base/app/bloc/user_cubit.dart';
 import 'package:base/core/di/injection.dart';
 import 'package:base/domain/entities/user.dart';
+import 'package:base/presentation/modules/users/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

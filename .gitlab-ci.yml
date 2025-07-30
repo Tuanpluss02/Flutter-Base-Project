@@ -1,7 +1,55 @@
 image: cirrusci/flutter:3.32.4
 
 stages:
+  - auto-format
   - code-quality
+
+auto-format:
+  stage: auto-format
+  script:
+    - echo "🚀 Starting auto-format process..."
+    - flutter pub get
+    
+    # Apply auto-fixes
+    - echo "🛠️ Applying dart fix..."
+    - dart fix --apply
+    
+    # Format code
+    - echo "📝 Formatting code..."
+    - dart format lib/ test/
+    
+    # Check for changes and commit if needed
+    - |
+      if [ -n "$(git status --porcelain)" ]; then
+        echo "📤 Changes detected, committing..."
+        git config --global user.email "gitlab-ci@example.com"
+        git config --global user.name "GitLab CI"
+        git add .
+        git commit -m "🤖 Auto-format: Apply dart fix and format code
+
+        - Applied dart fix --apply
+        - Formatted code with dart format
+        
+        [skip ci]"
+        
+        # Push changes back to the branch
+        git push https://oauth2:${CI_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git HEAD:${CI_COMMIT_REF_NAME}
+        echo "🎉 Code has been automatically formatted and committed!"
+      else
+        echo "✅ Code was already properly formatted!"
+      fi
+    
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH =~ /^feature\/.*/
+    - if: $CI_COMMIT_BRANCH =~ /^bugfix\/.*/
+    - if: $CI_COMMIT_BRANCH =~ /^hotfix\/.*/
+  
+  # Exclude this job if commit message contains [skip ci] to prevent infinite loops
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /\[skip ci\]/
 
 code-quality:
   stage: code-quality
@@ -9,27 +57,24 @@ code-quality:
     - echo "🚀 Starting code quality checks..."
     - flutter pub get
     
-    # Step 1: Check auto-fixable issues
+    # Step 1: Check auto-fixable issues (should be clean after auto-format stage)
     - echo "🛠️ Checking for auto-fixable issues..."
     - dart fix --apply
     - |
       if [ -n "$(git status --porcelain)" ]; then
-        echo "❌ Code has auto-fixable issues. Please run 'dart fix --apply' locally and commit the changes."
-        echo "Files that would be changed:"
-        git status --porcelain
-        echo "Diff:"
-        git diff
+        echo "❌ Code still has auto-fixable issues after auto-format stage."
+        echo "This should not happen. Please check the auto-format job."
         exit 1
       else
         echo "✅ No auto-fixable issues found."
       fi
     
-    # Step 2: Check code formatting
+    # Step 2: Check code formatting (should be clean after auto-format stage)
     - echo "📝 Checking code formatting..."
     - |
-      if ! dart format --set-exit-if-changed lib/; then
-        echo "❌ Code is not properly formatted."
-        echo "Please run 'fvm dart format lib/ test/' locally and commit the changes."
+      if ! dart format --set-exit-if-changed lib/ test/; then
+        echo "❌ Code is not properly formatted after auto-format stage."
+        echo "This should not happen. Please check the auto-format job."
         exit 1
       else
         echo "✅ Code formatting is correct."
@@ -52,3 +97,6 @@ code-quality:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH =~ /^feature\/.*/
+    - if: $CI_COMMIT_BRANCH =~ /^bugfix\/.*/
+    - if: $CI_COMMIT_BRANCH =~ /^hotfix\/.*/

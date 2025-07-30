@@ -1,8 +1,12 @@
+import 'package:base/app/bloc/app_cubit.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
 import 'package:base/core/di/injection.dart';
+import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +17,9 @@ void main() async {
   // Initialize dependency injection
   await configureDependencies();
 
+  // Initialize slang localization
+  LocaleSettings.useDeviceLocale();
+
   runApp(const MyApp());
 }
 
@@ -21,13 +28,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: FlavorConfig.title,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: AppRouter.router,
+    return BlocProvider(
+      create: (context) => getIt<AppCubit>()..initialize(),
+      child: BlocBuilder<AppCubit, AppState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: FlavorConfig.title,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.themeMode,
+            routerConfig: AppRouter.router,
+            locale: state.currentLocale?.flutterLocale,
+            supportedLocales: AppLocale.values.map((e) => e.flutterLocale),
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          );
+        },
+      ),
     );
   }
 }
