@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:base/configs/router/app_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class AppNavigator extends WidgetsBindingObserver {
     _isInitialized = true;
 
     if (kDebugMode) {
-      debugPrint('AppNavigator: Initialized with lifecycle management');
+      log('AppNavigator: Initialized with lifecycle management');
     }
   }
 
@@ -44,7 +46,7 @@ class AppNavigator extends WidgetsBindingObserver {
       _pendingNavigations.clear();
 
       if (kDebugMode) {
-        debugPrint('AppNavigator: Disposed');
+        log('AppNavigator: Disposed');
       }
     }
   }
@@ -52,7 +54,7 @@ class AppNavigator extends WidgetsBindingObserver {
   /// Log navigation errors (debug mode only)
   static void _logNavigationError(String method, String error) {
     if (kDebugMode) {
-      debugPrint('AppNavigator.$method: $error');
+      log('AppNavigator.$method: $error');
     }
   }
 
@@ -63,7 +65,7 @@ class AppNavigator extends WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (kDebugMode) {
-      debugPrint('AppNavigator: App state changed to $state');
+      log('AppNavigator: App state changed to $state');
     }
 
     switch (state) {
@@ -89,13 +91,11 @@ class AppNavigator extends WidgetsBindingObserver {
       if (isNavigatorReady) {
         processPendingNavigations();
         if (kDebugMode) {
-          debugPrint(
-            'AppNavigator: App resumed, processed pending navigations',
-          );
+          log('AppNavigator: App resumed, processed pending navigations');
         }
       } else {
         if (kDebugMode) {
-          debugPrint('AppNavigator: App resumed but navigator not ready');
+          log('AppNavigator: App resumed but navigator not ready');
         }
       }
     });
@@ -106,9 +106,7 @@ class AppNavigator extends WidgetsBindingObserver {
     if (kDebugMode) {
       final pendingCount = pendingNavigationCount;
       if (pendingCount > 0) {
-        debugPrint(
-          'AppNavigator: App paused with $pendingCount pending navigations',
-        );
+        log('AppNavigator: App paused with $pendingCount pending navigations');
       }
     }
   }
@@ -117,7 +115,7 @@ class AppNavigator extends WidgetsBindingObserver {
   void _handleAppDetached() {
     clearPendingNavigations();
     if (kDebugMode) {
-      debugPrint('AppNavigator: App detached, cleared pending navigations');
+      log('AppNavigator: App detached, cleared pending navigations');
     }
   }
 
@@ -250,146 +248,6 @@ class AppNavigator extends WidgetsBindingObserver {
     return current != null && current == route;
   }
 
-  // ==================== DIALOG & MODAL METHODS ====================
-
-  /// Show dialog without requiring context with auto-safe handling
-  ///
-  /// Returns [Future<T?>] - The result from the dialog, or null if failed
-  /// [builder] - Function that builds the dialog widget
-  /// [onNavigatorNotReady] - Callback when navigator is not ready
-  /// [barrierDismissible] - Whether dialog can be dismissed by tapping outside
-  /// [barrierColor] - Color of the modal barrier
-  /// [barrierLabel] - Semantic label for the barrier
-  /// [useSafeArea] - Whether to avoid system intrusions
-  /// [useRootNavigator] - Whether to use root navigator
-  static Future<T?> showDialogGlobal<T extends Object?>({
-    required Widget Function(BuildContext) builder,
-    VoidCallback? onNavigatorNotReady,
-    bool barrierDismissible = true,
-    Color? barrierColor,
-    String? barrierLabel,
-    bool useSafeArea = true,
-    bool useRootNavigator = true,
-  }) async {
-    if (!isNavigatorReady) {
-      _logNavigationError('showDialogGlobal', 'Navigator not ready');
-      onNavigatorNotReady?.call();
-      return null;
-    }
-
-    try {
-      return await showDialog<T>(
-        context: _context!,
-        builder: builder,
-        barrierDismissible: barrierDismissible,
-        barrierColor: barrierColor,
-        barrierLabel: barrierLabel,
-        useSafeArea: useSafeArea,
-        useRootNavigator: useRootNavigator,
-      );
-    } catch (e) {
-      _logNavigationError('showDialogGlobal', 'Error showing dialog: $e');
-      return null;
-    }
-  }
-
-  /// Show bottom sheet without requiring context with auto-safe handling
-  ///
-  /// Returns [Future<T?>] - The result from the bottom sheet, or null if failed
-  /// [builder] - Function that builds the bottom sheet widget
-  /// [onNavigatorNotReady] - Callback when navigator is not ready
-  /// [backgroundColor] - Background color of the bottom sheet
-  /// [elevation] - Elevation of the bottom sheet
-  /// [shape] - Shape of the bottom sheet
-  /// [clipBehavior] - Clip behavior for the bottom sheet
-  /// [constraints] - Constraints for the bottom sheet
-  /// [isScrollControlled] - Whether the bottom sheet is scroll controlled
-  /// [useRootNavigator] - Whether to use root navigator
-  /// [isDismissible] - Whether the bottom sheet can be dismissed
-  /// [enableDrag] - Whether drag to dismiss is enabled
-  static Future<T?> showBottomSheet<T extends Object?>({
-    required Widget Function(BuildContext) builder,
-    VoidCallback? onNavigatorNotReady,
-    Color? backgroundColor,
-    double? elevation,
-    ShapeBorder? shape,
-    Clip? clipBehavior,
-    BoxConstraints? constraints,
-    bool isScrollControlled = false,
-    bool useRootNavigator = false,
-    bool isDismissible = true,
-    bool enableDrag = true,
-  }) async {
-    if (!isNavigatorReady) {
-      _logNavigationError('showBottomSheet', 'Navigator not ready');
-      onNavigatorNotReady?.call();
-      return null;
-    }
-
-    try {
-      return await showModalBottomSheet<T>(
-        context: _context!,
-        builder: builder,
-        backgroundColor: backgroundColor,
-        elevation: elevation,
-        shape: shape,
-        clipBehavior: clipBehavior,
-        constraints: constraints,
-        isScrollControlled: isScrollControlled,
-        useRootNavigator: useRootNavigator,
-        isDismissible: isDismissible,
-        enableDrag: enableDrag,
-      );
-    } catch (e) {
-      _logNavigationError('showBottomSheet', 'Error showing bottom sheet: $e');
-      return null;
-    }
-  }
-
-  /// Show snackbar without requiring context with auto-safe handling
-  ///
-  /// Returns [bool] - True if snackbar was shown successfully
-  /// [message] - The message to display in the snackbar
-  /// [duration] - How long to show the snackbar
-  /// [action] - Optional action button for the snackbar
-  /// [backgroundColor] - Background color of the snackbar
-  /// [textColor] - Text color of the snackbar message
-  static bool showSnackBar({
-    required String message,
-    Duration duration = const Duration(seconds: 3),
-    SnackBarAction? action,
-    Color? backgroundColor,
-    Color? textColor,
-  }) {
-    if (!isNavigatorReady) {
-      _logNavigationError(
-        'showSnackBar',
-        'Navigator not ready for message: $message',
-      );
-      return false;
-    }
-
-    try {
-      final messenger = ScaffoldMessenger.of(_context!);
-      messenger.hideCurrentSnackBar();
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            message,
-            style: textColor != null ? TextStyle(color: textColor) : null,
-          ),
-          duration: duration,
-          action: action,
-          backgroundColor: backgroundColor,
-        ),
-      );
-      return true;
-    } catch (e) {
-      _logNavigationError('showSnackBar', 'Error showing snackbar: $e');
-      return false;
-    }
-  }
-
   // ==================== PENDING NAVIGATION QUEUE ====================
 
   /// Queue navigation to execute when navigator becomes ready
@@ -440,7 +298,7 @@ class AppNavigator extends WidgetsBindingObserver {
 
     _pendingNavigations.clear();
     if (kDebugMode) {
-      debugPrint('AppNavigator: Processed $count pending navigations');
+      log('AppNavigator: Processed $count pending navigations');
     }
   }
 
@@ -449,7 +307,7 @@ class AppNavigator extends WidgetsBindingObserver {
     final count = _pendingNavigations.length;
     _pendingNavigations.clear();
     if (kDebugMode && count > 0) {
-      debugPrint('AppNavigator: Cleared $count pending navigations');
+      log('AppNavigator: Cleared $count pending navigations');
     }
   }
 
