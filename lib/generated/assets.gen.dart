@@ -99,25 +99,25 @@ class $AssetsFontsGen {
 
   /// List of all assets
   List<String> get values => [
-    sFProDisplayBlack,
-    sFProDisplayBlackItalic,
-    sFProDisplayBold,
-    sFProDisplayBoldItalic,
-    sFProDisplayHeavy,
-    sFProDisplayHeavyItalic,
-    sFProDisplayLight,
-    sFProDisplayLightItalic,
-    sFProDisplayMedium,
-    sFProDisplayMediumItalic,
-    sFProDisplayRegular,
-    sFProDisplayRegularItalic,
-    sFProDisplaySemibold,
-    sFProDisplaySemiboldItalic,
-    sFProDisplayThin,
-    sFProDisplayThinItalic,
-    sFProDisplayUltralight,
-    sFProDisplayUltralightItalic,
-  ];
+        sFProDisplayBlack,
+        sFProDisplayBlackItalic,
+        sFProDisplayBold,
+        sFProDisplayBoldItalic,
+        sFProDisplayHeavy,
+        sFProDisplayHeavyItalic,
+        sFProDisplayLight,
+        sFProDisplayLightItalic,
+        sFProDisplayMedium,
+        sFProDisplayMediumItalic,
+        sFProDisplayRegular,
+        sFProDisplayRegularItalic,
+        sFProDisplaySemibold,
+        sFProDisplaySemiboldItalic,
+        sFProDisplayThin,
+        sFProDisplayThinItalic,
+        sFProDisplayUltralight,
+        sFProDisplayUltralightItalic
+      ];
 }
 
 class $AssetsImagesGen {
@@ -164,14 +164,14 @@ class $AssetsSvgsGen {
 class $AssetsTranslationsGen {
   const $AssetsTranslationsGen();
 
-  /// File path: assets/translations/en.json
-  String get en => 'assets/translations/en.json';
+  /// File path: assets/translations/strings.i18n.json
+  String get stringsI18n => 'assets/translations/strings.i18n.json';
 
-  /// File path: assets/translations/vi.json
-  String get vi => 'assets/translations/vi.json';
+  /// File path: assets/translations/strings_vi.i18n.json
+  String get stringsViI18n => 'assets/translations/strings_vi.i18n.json';
 
   /// List of all assets
-  List<String> get values => [en, vi];
+  List<String> get values => [stringsI18n, stringsViI18n];
 }
 
 class Assets {
@@ -187,7 +187,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
@@ -247,8 +251,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
@@ -257,11 +268,17 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -315,8 +332,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,
@@ -329,7 +345,10 @@ class SvgGenImage {
 }
 
 class RiveGenImage {
-  const RiveGenImage(this._assetName, {this.flavors = const {}});
+  const RiveGenImage(
+    this._assetName, {
+    this.flavors = const {},
+  });
 
   final String _assetName;
   final Set<String> flavors;
@@ -367,7 +386,10 @@ class RiveGenImage {
 }
 
 class LottieGenImage {
-  const LottieGenImage(this._assetName, {this.flavors = const {}});
+  const LottieGenImage(
+    this._assetName, {
+    this.flavors = const {},
+  });
 
   final String _assetName;
   final Set<String> flavors;
@@ -384,8 +406,11 @@ class LottieGenImage {
     _lottie.LottieImageProviderFactory? imageProviderFactory,
     Key? key,
     AssetBundle? bundle,
-    Widget Function(BuildContext, Widget, _lottie.LottieComposition?)?
-    frameBuilder,
+    Widget Function(
+      BuildContext,
+      Widget,
+      _lottie.LottieComposition?,
+    )? frameBuilder,
     ImageErrorWidgetBuilder? errorBuilder,
     double? width,
     double? height,
