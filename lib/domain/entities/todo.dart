@@ -4,7 +4,7 @@ part '../../generated/domain/entities/todo.freezed.dart';
 part '../../generated/domain/entities/todo.g.dart';
 
 @freezed
-class Todo with _$Todo {
+abstract class Todo with _$Todo {
   const factory Todo({
     required int userId,
     required int id,

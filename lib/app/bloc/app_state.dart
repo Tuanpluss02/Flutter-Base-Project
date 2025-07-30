@@ -2,7 +2,7 @@ part of 'app_bloc.dart';
 
 /// App state using Freezed
 @freezed
-class AppState with _$AppState {
+abstract class AppState with _$AppState {
   const factory AppState({
     @Default(false) bool isLoading,
     AppLocale? currentLocale,

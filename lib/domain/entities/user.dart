@@ -4,7 +4,7 @@ part '../../generated/domain/entities/user.freezed.dart';
 part '../../generated/domain/entities/user.g.dart';
 
 @freezed
-class User with _$User {
+abstract class User with _$User {
   const factory User({
     required int id,
     required String name,

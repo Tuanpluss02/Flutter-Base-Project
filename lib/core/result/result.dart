@@ -69,7 +69,7 @@ extension ResultExtensions<T> on Result<T> {
 
 /// Failure types using Freezed union types
 @freezed
-class Failure with _$Failure {
+abstract class Failure with _$Failure {
   const factory Failure.server({String? message}) = ServerFailure;
   const factory Failure.network({String? message}) = NetworkFailure;
   const factory Failure.cache({String? message}) = CacheFailure;
