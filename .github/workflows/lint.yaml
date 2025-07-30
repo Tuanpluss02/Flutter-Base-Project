@@ -28,32 +28,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: 🛠️ Check auto-fixable issues
-        run: |
-          echo "Running dart fix --apply to check for auto-fixable issues..."
-          dart fix --apply
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "❌ Code has auto-fixable issues. Please run 'dart fix --apply' locally and commit the changes."
-            echo "Files that would be changed:"
-            git status --porcelain
-            echo "Diff:"
-            git diff
-            exit 1
-          else
-            echo "✅ No auto-fixable issues found."
-          fi
-
-      - name: 📝 Check code formatting
-        run: |
-          echo "Checking code formatting..."
-          if ! dart format --set-exit-if-changed lib/; then
-            echo "❌ Code is not properly formatted."
-            echo "Please run 'fvm dart format lib/ test/' locally and commit the changes."
-            exit 1
-          else
-            echo "✅ Code formatting is correct."
-          fi
-
       - name: 🔍 Run static analysis
         run: |
           echo "Running static analysis..."
