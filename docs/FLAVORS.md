@@ -62,15 +62,6 @@ fvm flutter build ios --flavor develop --target lib/main_develop.dart
 fvm flutter build ios --flavor production --target lib/main_production.dart
 ```
 
-## VS Code Launch Configurations
-
-The project includes VS Code launch configurations in `.vscode/launch.json`:
-
-- **Develop (Debug)** - Run development flavor in debug mode
-- **Production (Debug)** - Run production flavor in debug mode
-- **Develop (Release)** - Run development flavor in release mode
-- **Production (Release)** - Run production flavor in release mode
-
 ## Flavor Configuration
 
 The `FlavorConfig` class provides access to environment-specific values:
@@ -104,13 +95,6 @@ String appName = FlavorConfig.appName;
 - **Development**: `com.stormx.base.dev`
 - **Production**: `com.stormx.base`
 
-## Network Configuration
-
-The Dio HTTP client is automatically configured based on the current flavor:
-
-- Base URL is loaded from the environment file
-- Timeout values are loaded from the environment file
-- Debug logging is enabled/disabled based on the `DEBUG_MODE` environment variable
 
 ## Adding New Environment Variables
 

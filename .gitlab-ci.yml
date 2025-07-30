@@ -1,0 +1,10 @@
+image: cirrusci/flutter:3.32.4
+
+stages:
+  - lint
+
+lint:
+  stage: lint
+  script:
+    - flutter pub get
+    - flutter analyze
