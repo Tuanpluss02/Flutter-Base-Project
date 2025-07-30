@@ -1,5 +1,5 @@
+import 'package:base/configs/router/app_navigator.dart';
 import 'package:base/configs/router/app_router.dart';
-import 'package:base/core/services/app_navigator.dart';
 import 'package:base/generated/assets/assets.gen.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:base/presentation/shared/environment_info_widget.dart';

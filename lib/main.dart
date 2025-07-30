@@ -1,10 +1,10 @@
 import 'package:base/app/bloc/app_bloc.dart';
 import 'package:base/configs/flavor/flavor_config.dart';
+import 'package:base/configs/router/app_navigator.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
 import 'package:base/core/di/injection.dart';
-import 'package:base/core/network/alice_service.dart';
-import 'package:base/core/services/app_navigator.dart';
+import 'package:base/core/services/alice_service.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

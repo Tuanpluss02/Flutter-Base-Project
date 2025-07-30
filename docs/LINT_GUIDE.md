@@ -1,9 +1,5 @@
 # Flutter Lint Configuration Guide
 
-## Overview
-
-This project uses a comprehensive linting configuration to ensure code quality and consistency. The linting process is enforced through CI/CD pipelines that will block merge requests if code doesn't meet our standards.
-
 ## CI/CD Configuration
 
 ### GitHub Actions
@@ -11,10 +7,10 @@ This project uses a comprehensive linting configuration to ensure code quality a
 The GitHub Actions workflow (`.github/workflows/lint.yaml`) runs a **single optimized job** with **sequential steps**:
 
 **Job: `code-quality`**
-1. **🛠️ Check auto-fixable issues**: `dart fix --apply`
-2. **📝 Check code formatting**: `dart format --set-exit-if-changed lib/`
-3. **🔍 Run static analysis**: `flutter analyze --fatal-warnings`
-4. **✅ Success confirmation**
+1. **Check auto-fixable issues**: `dart fix --apply`
+2. **Check code formatting**: `dart format --set-exit-if-changed lib/`
+3. **Run static analysis**: `flutter analyze --fatal-warnings`
+4. **Success confirmation**
 
 ### GitLab CI
 
@@ -24,14 +20,6 @@ The GitLab CI configuration (`.gitlab-ci.yml`) uses the **same optimized approac
 - Single job with sequential execution
 - Fast-fail on first error
 - Clear step-by-step feedback
-
-### Why This Approach is Optimal
-
-✅ **Resource Efficient**: Single setup, no redundant operations  
-✅ **Fast Feedback**: Fails immediately on first issue  
-✅ **Clear Logs**: Sequential execution with emoji indicators  
-✅ **Professional**: Industry standard approach  
-✅ **Maintainable**: Simple, single job to manage  
 
 Both CI systems will **fail** if:
 - Code has auto-fixable issues that haven't been applied
@@ -50,13 +38,6 @@ Our `analysis_options.yaml` includes:
 - `dead_code`
 - `missing_return`
 - `invalid_assignment`
-
-### Additional Strict Rules
-- Over 70 additional lint rules for code quality
-- Constructor ordering requirements
-- Const usage enforcement
-- Import organization
-- And many more...
 
 ## Usage
 
@@ -95,24 +76,6 @@ fvm dart format --set-exit-if-changed lib/
 ```
 
 **Note**: `--set-exit-if-changed` will exit with code 1 if files need formatting. This is normal behavior and used by CI to detect unformatted code.
-
-## Common Issues and Fixes
-
-### Auto-fixable Issues
-- **Unused imports**: Automatically removed by `dart fix --apply`
-- **Prefer single quotes**: Automatically fixed
-- **Missing const**: Automatically added where possible
-
-### Manual Fixes Required
-- **Constructor ordering**: Move constructors to the top of classes
-- **Missing return types**: Add explicit return types to functions
-- **Dead code**: Remove unreachable code
-- **Complex logic**: Simplify overly complex expressions
-
-### Format Issues
-- **Inconsistent spacing**: Fixed by `dart format`
-- **Line length**: Automatically wrapped by formatter
-- **Indentation**: Standardized by formatter
 
 ## Developer Workflow
 
@@ -192,16 +155,3 @@ This means there are analyzer warnings or errors.
 ```bash
 chmod +x scripts/fix_lint.sh
 ```
-
-## Pipeline Execution
-
-The CI pipeline runs **sequentially** in this order:
-
-1. **🛠️ Auto-fix check** ➜ Validates no auto-fixable issues remain
-2. **📝 Format check** ➜ Validates code formatting  
-3. **🔍 Static analysis** ➜ Validates no analyzer warnings
-4. **✅ Success** ➜ Confirms all checks passed
-
-**Fast-fail**: Pipeline stops immediately on first failure, providing quick feedback on what needs to be fixed.
-
-This approach ensures **maximum efficiency** while maintaining **professional code quality standards**.

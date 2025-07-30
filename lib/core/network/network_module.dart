@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:base/configs/flavor/flavor_config.dart';
-import 'package:base/core/network/alice_service.dart';
+import 'package:base/core/services/alice_service.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
