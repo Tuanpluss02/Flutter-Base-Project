@@ -1,24 +1,23 @@
-import 'package:dartz/dartz.dart';
-import 'package:base/core/error/failure.dart';
+import 'package:base/core/result/result.dart';
 
 // For use cases with parameters
 abstract class UseCase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+  Future<Result<Type>> call(Params params);
 }
 
 // For use cases without parameters
 abstract class UseCaseWithoutParams<Type> {
-  Future<Either<Failure, Type>> call();
+  Future<Result<Type>> call();
 }
 
 // For synchronous use cases with parameters
 abstract class SyncUseCase<Type, Params> {
-  Either<Failure, Type> call(Params params);
+  Result<Type> call(Params params);
 }
 
 // For synchronous use cases without parameters
 abstract class SyncUseCaseWithoutParams<Type> {
-  Either<Failure, Type> call();
+  Result<Type> call();
 }
 
 // No params class for use cases that don't need parameters

@@ -1,4 +1,4 @@
-import 'package:base/core/error/failure.dart';
+import 'package:base/core/result/result.dart';
 import 'package:base/domain/entities/user.dart';
 import 'package:base/domain/usecases/get_users_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +18,7 @@ class UserCubit extends Cubit<UserState> {
 
     result.fold(
       (failure) {
-        String errorMessage = 'An unexpected error occurred';
-        if (failure is ServerFailure) {
-          errorMessage = failure.message ?? 'Server Error';
-        } else if (failure is NetworkFailure) {
-          errorMessage = failure.message ?? 'Network Error';
-        } else if (failure is CacheFailure) {
-          errorMessage = 'Cache Error';
-        }
-        emit(UserError(errorMessage));
+        emit(UserError(failure.userMessage));
       },
       (users) {
         emit(UserLoaded(users));

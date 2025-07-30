@@ -1,64 +1,30 @@
 part of 'app_bloc.dart';
 
-/// Base class for all app events
-abstract class AppEvent extends Equatable {
-  const AppEvent();
+/// App events using Freezed union types
+@freezed
+class AppEvent with _$AppEvent {
+  /// Event to initialize the app
+  const factory AppEvent.initialize() = AppInitializeEvent;
 
-  @override
-  List<Object?> get props => [];
-}
+  /// Event to change language
+  const factory AppEvent.changeLanguage(AppLocale locale) =
+      AppChangeLanguageEvent;
 
-/// Event to initialize the app
-class AppInitializeEvent extends AppEvent {
-  const AppInitializeEvent();
-}
+  /// Event to change theme
+  const factory AppEvent.changeTheme(ThemeMode themeMode) = AppChangeThemeEvent;
 
-/// Event to change language
-class AppChangeLanguageEvent extends AppEvent {
-  const AppChangeLanguageEvent(this.locale);
+  /// Event when connectivity status changes
+  const factory AppEvent.connectivityChanged(
+    ConnectivityStatus connectivityStatus,
+  ) = AppConnectivityChangedEvent;
 
-  final AppLocale locale;
+  /// Event to manually check connectivity
+  const factory AppEvent.checkConnectivity() = AppCheckConnectivityEvent;
 
-  @override
-  List<Object?> get props => [locale];
-}
+  /// Event to handle app lifecycle changes
+  const factory AppEvent.lifecycleChanged(AppLifecycleState state) =
+      AppLifecycleChangedEvent;
 
-/// Event to change theme
-class AppChangeThemeEvent extends AppEvent {
-  const AppChangeThemeEvent(this.themeMode);
-
-  final ThemeMode themeMode;
-
-  @override
-  List<Object?> get props => [themeMode];
-}
-
-/// Event when connectivity status changes
-class AppConnectivityChangedEvent extends AppEvent {
-  const AppConnectivityChangedEvent(this.connectivityStatus);
-
-  final ConnectivityStatus connectivityStatus;
-
-  @override
-  List<Object?> get props => [connectivityStatus];
-}
-
-/// Event to manually check connectivity
-class AppCheckConnectivityEvent extends AppEvent {
-  const AppCheckConnectivityEvent();
-}
-
-/// Event to handle app lifecycle changes
-class AppLifecycleChangedEvent extends AppEvent {
-  const AppLifecycleChangedEvent(this.state);
-
-  final AppLifecycleState state;
-
-  @override
-  List<Object?> get props => [state];
-}
-
-/// Event to clear error state
-class AppClearErrorEvent extends AppEvent {
-  const AppClearErrorEvent();
+  /// Event to clear error state
+  const factory AppEvent.clearError() = AppClearErrorEvent;
 }

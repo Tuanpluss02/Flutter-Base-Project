@@ -1,35 +1,17 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User extends Equatable {
-  const User({
-    required this.id,
-    required this.name,
-    required this.email,
-    this.phone,
-    this.website,
-  });
-  final int id;
-  final String name;
-  final String email;
-  final String? phone;
-  final String? website;
+part '../../generated/domain/entities/user.freezed.dart';
+part '../../generated/domain/entities/user.g.dart';
 
-  @override
-  List<Object?> get props => [id, name, email, phone, website];
-
-  User copyWith({
-    int? id,
-    String? name,
-    String? email,
+@freezed
+class User with _$User {
+  const factory User({
+    required int id,
+    required String name,
+    required String email,
     String? phone,
     String? website,
-  }) {
-    return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-      website: website ?? this.website,
-    );
-  }
+  }) = _User;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

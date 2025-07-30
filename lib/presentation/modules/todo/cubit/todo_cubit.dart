@@ -1,4 +1,4 @@
-import 'package:base/core/error/failure.dart';
+import 'package:base/core/result/result.dart';
 import 'package:base/domain/entities/todo.dart';
 import 'package:base/domain/usecases/get_todos_usecase.dart';
 import 'package:base/domain/usecases/update_todo_usecase.dart';
@@ -42,15 +42,7 @@ class TodoCubit extends Cubit<TodoState> {
 
     result.fold(
       (failure) {
-        String errorMessage = 'An unexpected error occurred';
-        if (failure is ServerFailure) {
-          errorMessage = failure.message ?? 'Server Error';
-        } else if (failure is NetworkFailure) {
-          errorMessage = failure.message ?? 'Network Error';
-        } else if (failure is CacheFailure) {
-          errorMessage = 'Cache Error';
-        }
-        emit(TodoError(errorMessage));
+        emit(TodoError(failure.userMessage));
       },
       (todos) {
         emit(TodoLoaded(todos));
@@ -69,13 +61,7 @@ class TodoCubit extends Cubit<TodoState> {
 
       result.fold(
         (failure) {
-          String errorMessage = 'Failed to update todo';
-          if (failure is ServerFailure) {
-            errorMessage = failure.message ?? 'Server Error';
-          } else if (failure is NetworkFailure) {
-            errorMessage = failure.message ?? 'Network Error';
-          }
-          emit(TodoError(errorMessage));
+          emit(TodoError(failure.userMessage));
         },
         (updatedTodo) {
           // Update the todo in the list
