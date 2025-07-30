@@ -4,6 +4,7 @@ import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/core/network/alice_service.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +49,15 @@ abstract class NetworkModule {
 
     // Add Alice interceptor for development flavor
     if (FlavorConfig.isDevelopment && aliceService.isEnabled) {
-      dio.interceptors.add(aliceService.aliceDioAdapter);
+      try {
+        dio.interceptors.add(aliceService.aliceDioAdapter);
+      } catch (e) {
+        // If Alice is not properly initialized, continue without it
+        // This prevents the app from crashing if Alice setup fails
+        if (FlavorConfig.debugMode) {
+          debugPrint('Warning: Alice interceptor could not be added: $e');
+        }
+      }
     }
 
     return dio;

@@ -8,7 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:base/app/bloc/app_cubit.dart' as _i376;
+import 'package:base/app/bloc/app_cubit.dart' as _i316;
 import 'package:base/core/network/alice_service.dart' as _i74;
 import 'package:base/core/network/network_module.dart' as _i899;
 import 'package:base/core/services/language_service.dart' as _i242;
@@ -27,8 +27,8 @@ import 'package:base/domain/usecases/get_todos_usecase.dart' as _i712;
 import 'package:base/domain/usecases/get_user_by_id_usecase.dart' as _i970;
 import 'package:base/domain/usecases/get_users_usecase.dart' as _i832;
 import 'package:base/domain/usecases/update_todo_usecase.dart' as _i573;
-import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart' as _i161;
-import 'package:base/presentation/modules/users/cubit/user_cubit.dart' as _i529;
+import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart' as _i256;
+import 'package:base/presentation/modules/users/cubit/user_cubit.dart' as _i578;
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -62,9 +62,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i74.AliceService>()),
     );
-    gh.factory<_i376.AppCubit>(
+    gh.factory<_i316.AppCubit>(
       () =>
-          _i376.AppCubit(gh<_i242.LanguageService>(), gh<_i610.ThemeService>()),
+          _i316.AppCubit(gh<_i242.LanguageService>(), gh<_i610.ThemeService>()),
     );
     gh.factory<_i8.UserApiService>(() => _i8.UserApiService(gh<_i361.Dio>()));
     gh.factory<_i10.TodoApiService>(() => _i10.TodoApiService(gh<_i361.Dio>()));
@@ -92,11 +92,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i970.GetUserByIdUseCase>(
       () => _i970.GetUserByIdUseCase(gh<_i1012.UserRepository>()),
     );
-    gh.factory<_i529.UserCubit>(
-      () => _i529.UserCubit(gh<_i832.GetUsersUseCase>()),
+    gh.factory<_i578.UserCubit>(
+      () => _i578.UserCubit(gh<_i832.GetUsersUseCase>()),
     );
-    gh.factory<_i161.TodoCubit>(
-      () => _i161.TodoCubit(
+    gh.factory<_i256.TodoCubit>(
+      () => _i256.TodoCubit(
         gh<_i712.GetTodosUseCase>(),
         gh<_i573.UpdateTodoUseCase>(),
       ),

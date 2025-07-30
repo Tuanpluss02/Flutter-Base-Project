@@ -5,6 +5,7 @@ import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart';
 import 'package:base/presentation/modules/todo/todos_page.dart';
 import 'package:base/presentation/modules/users/users_page.dart';
 import 'package:base/presentation/shared/global_error_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,11 @@ class AppRoutes {
 }
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: AppRoutes.home,
     routes: [
       GoRoute(

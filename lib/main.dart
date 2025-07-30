@@ -3,6 +3,7 @@ import 'package:base/configs/flavor/flavor_config.dart';
 import 'package:base/configs/router/app_router.dart';
 import 'package:base/configs/theme/app_theme.dart';
 import 'package:base/core/di/injection.dart';
+import 'package:base/core/network/alice_service.dart';
 import 'package:base/generated/translations/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,9 @@ void main() async {
 
   // Initialize dependency injection
   await configureDependencies();
+
+  // Initialize Alice with navigator key
+  getIt<AliceService>().initialize(navigatorKey: AppRouter.navigatorKey);
 
   // Initialize slang localization
   LocaleSettings.useDeviceLocale();
