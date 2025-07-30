@@ -48,7 +48,7 @@ class TodosPage extends StatelessWidget {
     int? updatingTodoId,
   ]) {
     if (todos.isEmpty) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
