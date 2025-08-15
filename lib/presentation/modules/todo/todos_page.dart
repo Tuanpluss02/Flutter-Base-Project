@@ -1,5 +1,6 @@
 import 'package:base/domain/entities/todo.dart';
 import 'package:base/presentation/modules/todo/cubit/todo_cubit.dart';
+import 'package:base/presentation/modules/todo/cubit/todo_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,16 +28,14 @@ class TodosPage extends StatelessWidget {
       ),
       body: BlocBuilder<TodoCubit, TodoState>(
         builder: (context, state) {
-          if (state is TodoInitial || state is TodoLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is TodoLoaded) {
-            return _buildTodosList(context, state.todos);
-          } else if (state is TodoUpdating) {
-            return _buildTodosList(context, state.todos, state.updatingTodoId);
-          } else if (state is TodoError) {
-            return _buildErrorWidget(context, state.message);
-          }
-          return const SizedBox.shrink();
+          return state.when(
+            initial: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            loaded: (todos) => _buildTodosList(context, todos),
+            updating: (todos, updatingTodoId) =>
+                _buildTodosList(context, todos, updatingTodoId),
+            error: (message) => _buildErrorWidget(context, message),
+          );
         },
       ),
     );
