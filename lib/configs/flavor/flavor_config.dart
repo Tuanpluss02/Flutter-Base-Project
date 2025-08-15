@@ -8,14 +8,7 @@ class FlavorConfig {
   static String get name => appFlavor?.name ?? '';
 
   static String get title {
-    switch (appFlavor) {
-      case Flavor.develop:
-        return 'Base Dev';
-      case Flavor.production:
-        return 'Base';
-      default:
-        return 'title';
-    }
+    return appName;
   }
 
   /// Load environment variables based on the current flavor
@@ -67,6 +60,10 @@ class FlavorConfig {
   static bool get isProduction => appFlavor == Flavor.production;
 
   static String get bundleId {
+    return dotenv.env['BUNDLE_ID'] ?? _getDefaultBundleId();
+  }
+
+  static String _getDefaultBundleId() {
     switch (appFlavor) {
       case Flavor.develop:
         return 'com.stormx.base.dev';

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # App Configuration Changer Script
 # This script helps change app name and bundle ID for different flavors
@@ -22,11 +22,88 @@ ENV_DEV="assets/env/.env.dev"
 ENV_PRODUCTION="assets/env/.env.production"
 ENV_DEFAULT="assets/env/.env"
 
-# Current configurations
-DEVELOP_DISPLAY_NAME="Base Dev"
-DEVELOP_BUNDLE_ID="com.stormx.base.dev"
-PRODUCTION_DISPLAY_NAME="Base"
-PRODUCTION_BUNDLE_ID="com.stormx.base"
+# Function to get current config from files
+get_current_android_app_name() {
+    local flavor="$1"
+    if [[ -f "$ANDROID_BUILD_GRADLE" ]]; then
+        awk "/create\(\"$flavor\"\)/{flag=1} flag && /resValue.*app_name/{print; exit} /^[[:space:]]*}[[:space:]]*$/ && flag{flag=0}" "$ANDROID_BUILD_GRADLE" | sed 's/.*resValue("string", "app_name", "\([^"]*\)".*/\1/'
+    fi
+}
+
+get_current_android_app_id() {
+    if [[ -f "$ANDROID_BUILD_GRADLE" ]]; then
+        grep "applicationId =" "$ANDROID_BUILD_GRADLE" | sed 's/.*applicationId = "\([^"]*\)".*/\1/'
+    fi
+}
+
+get_current_ios_product_name() {
+    local flavor="$1"
+    local xcconfig_file
+    if [[ "$flavor" == "develop" ]]; then
+        xcconfig_file="$IOS_DEVELOP_XCCONFIG"
+    else
+        xcconfig_file="$IOS_PRODUCTION_XCCONFIG"
+    fi
+    
+    if [[ -f "$xcconfig_file" ]]; then
+        grep "PRODUCT_NAME =" "$xcconfig_file" | sed 's/.*PRODUCT_NAME = \(.*\)/\1/'
+    fi
+}
+
+get_current_ios_bundle_id() {
+    local flavor="$1"
+    local xcconfig_file
+    if [[ "$flavor" == "develop" ]]; then
+        xcconfig_file="$IOS_DEVELOP_XCCONFIG"
+    else
+        xcconfig_file="$IOS_PRODUCTION_XCCONFIG"
+    fi
+    
+    if [[ -f "$xcconfig_file" ]]; then
+        grep "PRODUCT_BUNDLE_IDENTIFIER =" "$xcconfig_file" | sed 's/.*PRODUCT_BUNDLE_IDENTIFIER = \(.*\)/\1/'
+    fi
+}
+
+# Dynamic configurations - read from actual files
+get_develop_display_name() {
+    local android_name=$(get_current_android_app_name "develop")
+    local ios_name=$(get_current_ios_product_name "develop")
+    echo "${android_name:-${ios_name:-Base Dev}}"
+}
+
+get_develop_bundle_id() {
+    local ios_id=$(get_current_ios_bundle_id "develop")
+    local android_id=$(get_current_android_app_id)
+    
+    # Prefer iOS config for develop, fallback to android + .dev suffix
+    if [[ -n "$ios_id" ]]; then
+        echo "$ios_id"
+    elif [[ -n "$android_id" ]]; then
+        echo "${android_id}.dev"
+    else
+        echo "com.stormx.base.dev"
+    fi
+}
+
+get_production_display_name() {
+    local android_name=$(get_current_android_app_name "production")
+    local ios_name=$(get_current_ios_product_name "production")
+    echo "${android_name:-${ios_name:-Base}}"
+}
+
+get_production_bundle_id() {
+    local ios_id=$(get_current_ios_bundle_id "production")
+    local android_id=$(get_current_android_app_id)
+    
+    # Prefer iOS config for production, fallback to android
+    if [[ -n "$ios_id" ]]; then
+        echo "$ios_id"
+    elif [[ -n "$android_id" ]]; then
+        echo "$android_id"
+    else
+        echo "com.stormx.base"
+    fi
+}
 
 # Function to print colored output
 print_info() {
@@ -72,12 +149,12 @@ show_help() {
     echo ""
     echo "Current Configuration:"
     echo "  develop:"
-    echo "    Display Name: $DEVELOP_DISPLAY_NAME"
-    echo "    Bundle ID: $DEVELOP_BUNDLE_ID"
+    echo "    Display Name: $(get_develop_display_name)"
+    echo "    Bundle ID: $(get_develop_bundle_id)"
     echo ""
     echo "  production:"
-    echo "    Display Name: $PRODUCTION_DISPLAY_NAME"
-    echo "    Bundle ID: $PRODUCTION_BUNDLE_ID"
+    echo "    Display Name: $(get_production_display_name)"
+    echo "    Bundle ID: $(get_production_bundle_id)"
 }
 
 # Function to show current configuration
@@ -88,14 +165,14 @@ show_current_config() {
     echo "============================="
     echo ""
     echo "DEVELOP Flavor:"
-    echo "  Display Name: $DEVELOP_DISPLAY_NAME"
-    echo "  Bundle ID: $DEVELOP_BUNDLE_ID"
-    echo "  Android App ID: $DEVELOP_BUNDLE_ID"
+    echo "  Display Name: $(get_develop_display_name)"
+    echo "  Bundle ID: $(get_develop_bundle_id)"
+    echo "  Android App ID: $(get_develop_bundle_id)"
     echo ""
     echo "PRODUCTION Flavor:"
-    echo "  Display Name: $PRODUCTION_DISPLAY_NAME"
-    echo "  Bundle ID: $PRODUCTION_BUNDLE_ID"
-    echo "  Android App ID: $PRODUCTION_BUNDLE_ID"
+    echo "  Display Name: $(get_production_display_name)"
+    echo "  Bundle ID: $(get_production_bundle_id)"
+    echo "  Android App ID: $(get_production_bundle_id)"
 }
 
 # Function to validate bundle ID format
@@ -200,6 +277,7 @@ update_macos_config() {
 update_env_files() {
     local flavor="$1"
     local display_name="$2"
+    local bundle_id="$3"
     
     print_info "Updating environment files for $flavor..."
     
@@ -211,7 +289,10 @@ update_env_files() {
     fi
     
     if [[ -f "$env_file" ]]; then
-        sed -i '' "s/APP_NAME=.*/APP_NAME=$display_name/" "$env_file"
+        sed -i '' \
+            -e "s/APP_NAME=.*/APP_NAME=$display_name/" \
+            -e "s/BUNDLE_ID=.*/BUNDLE_ID=$bundle_id/" \
+            "$env_file"
         print_success "Updated $env_file"
     else
         print_warning "Environment file not found at $env_file, skipping..."
@@ -219,7 +300,10 @@ update_env_files() {
     
     # Also update default env file if this is production
     if [[ "$flavor" == "production" && -f "$ENV_DEFAULT" ]]; then
-        sed -i '' "s/APP_NAME=.*/APP_NAME=$display_name/" "$ENV_DEFAULT"
+        sed -i '' \
+            -e "s/APP_NAME=.*/APP_NAME=$display_name/" \
+            -e "s/BUNDLE_ID=.*/BUNDLE_ID=$bundle_id/" \
+            "$ENV_DEFAULT"
         print_success "Updated default environment file"
     fi
 }
@@ -249,7 +333,7 @@ apply_changes() {
         update_macos_config "$display_name" "$bundle_id"
     fi
     
-    update_env_files "$flavor" "$display_name"
+    update_env_files "$flavor" "$display_name" "$bundle_id"
     
     print_success "$flavor flavor updated successfully!"
 }
@@ -311,11 +395,11 @@ interactive_update_specific_flavor() {
     
     local current_display_name current_bundle_id
     if [[ "$flavor" == "develop" ]]; then
-        current_display_name="$DEVELOP_DISPLAY_NAME"
-        current_bundle_id="$DEVELOP_BUNDLE_ID"
+        current_display_name="$(get_develop_display_name)"
+        current_bundle_id="$(get_develop_bundle_id)"
     else
-        current_display_name="$PRODUCTION_DISPLAY_NAME"
-        current_bundle_id="$PRODUCTION_BUNDLE_ID"
+        current_display_name="$(get_production_display_name)"
+        current_bundle_id="$(get_production_bundle_id)"
     fi
     
     echo ""
@@ -354,63 +438,58 @@ interactive_update_all_flavors() {
     echo ""
     print_info "Updating all flavors..."
     
-    # Collect new configurations
-    declare -A new_display_names
-    declare -A new_bundle_ids
+    # Collect new configurations using regular variables
+    local new_develop_display_name new_develop_bundle_id
+    local new_production_display_name new_production_bundle_id
     
-    for flavor in "develop" "production"; do
-        local current_display_name current_bundle_id
-        if [[ "$flavor" == "develop" ]]; then
-            current_display_name="$DEVELOP_DISPLAY_NAME"
-            current_bundle_id="$DEVELOP_BUNDLE_ID"
-        else
-            current_display_name="$PRODUCTION_DISPLAY_NAME"
-            current_bundle_id="$PRODUCTION_BUNDLE_ID"
-        fi
-        
-        echo ""
-        echo "--- Configuring $flavor flavor ---"
-        echo "Current configuration:"
-        echo "  Display Name: $current_display_name"
-        echo "  Bundle ID: $current_bundle_id"
-        
-        read -p "Enter new app display name (or press Enter to keep current): " new_display_name
-        if [[ -z "$new_display_name" ]]; then
-            new_display_name="$current_display_name"
-        fi
-        
-        read -p "Enter new bundle ID (or press Enter to keep current): " new_bundle_id
-        if [[ -z "$new_bundle_id" ]]; then
-            new_bundle_id="$current_bundle_id"
-        fi
-        
-        new_display_names[$flavor]="$new_display_name"
-        new_bundle_ids[$flavor]="$new_bundle_id"
-    done
+    # Configure develop flavor
+    echo ""
+    echo "--- Configuring develop flavor ---"
+    echo "Current configuration:"
+    echo "  Display Name: $(get_develop_display_name)"
+    echo "  Bundle ID: $(get_develop_bundle_id)"
+    
+    read -p "Enter new app display name (or press Enter to keep current): " new_develop_display_name
+    if [[ -z "$new_develop_display_name" ]]; then
+        new_develop_display_name="$(get_develop_display_name)"
+    fi
+    
+    read -p "Enter new bundle ID (or press Enter to keep current): " new_develop_bundle_id
+    if [[ -z "$new_develop_bundle_id" ]]; then
+        new_develop_bundle_id="$(get_develop_bundle_id)"
+    fi
+    
+    # Configure production flavor
+    echo ""
+    echo "--- Configuring production flavor ---"
+    echo "Current configuration:"
+    echo "  Display Name: $(get_production_display_name)"
+    echo "  Bundle ID: $(get_production_bundle_id)"
+    
+    read -p "Enter new app display name (or press Enter to keep current): " new_production_display_name
+    if [[ -z "$new_production_display_name" ]]; then
+        new_production_display_name="$(get_production_display_name)"
+    fi
+    
+    read -p "Enter new bundle ID (or press Enter to keep current): " new_production_bundle_id
+    if [[ -z "$new_production_bundle_id" ]]; then
+        new_production_bundle_id="$(get_production_bundle_id)"
+    fi
     
     echo ""
     echo "📋 Summary of all changes:"
-    for flavor in "develop" "production"; do
-        local current_display_name current_bundle_id
-        if [[ "$flavor" == "develop" ]]; then
-            current_display_name="$DEVELOP_DISPLAY_NAME"
-            current_bundle_id="$DEVELOP_BUNDLE_ID"
-        else
-            current_display_name="$PRODUCTION_DISPLAY_NAME"
-            current_bundle_id="$PRODUCTION_BUNDLE_ID"
-        fi
-        
-        echo "  $flavor:"
-        echo "    Display Name: $current_display_name → ${new_display_names[$flavor]}"
-        echo "    Bundle ID: $current_bundle_id → ${new_bundle_ids[$flavor]}"
-    done
+    echo "  develop:"
+    echo "    Display Name: $(get_develop_display_name) → $new_develop_display_name"
+    echo "    Bundle ID: $(get_develop_bundle_id) → $new_develop_bundle_id"
+    echo "  production:"
+    echo "    Display Name: $(get_production_display_name) → $new_production_display_name"
+    echo "    Bundle ID: $(get_production_bundle_id) → $new_production_bundle_id"
     
     echo ""
     read -p "Proceed with all changes? (y/N): " confirm
     if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        for flavor in "develop" "production"; do
-            apply_changes "$flavor" "${new_display_names[$flavor]}" "${new_bundle_ids[$flavor]}"
-        done
+        apply_changes "develop" "$new_develop_display_name" "$new_develop_bundle_id"
+        apply_changes "production" "$new_production_display_name" "$new_production_bundle_id"
         print_success "All changes applied successfully!"
     else
         print_warning "Changes cancelled."
